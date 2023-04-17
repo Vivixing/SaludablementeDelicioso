@@ -19,18 +19,18 @@ Se muestra la información sobre el la plataforma, información de contacto, y h
 - Menú y Categorías
 Visualizar el menú de la plataforma organizado por las categórías, donde cada comida tendrá su respactiva descricpción, precio e imagen de referencia.
 
-1. Veganos
-2. Vegetarianos
-3. Diabéticos 
-4. Bedidas
-5. Postres
+    - Veganos
+    - Vegetarianos
+    - Diabéticos 
+    - Bedidas
+    - Postres
 
 - Conexión con la base de datos
 Administar los datos del restaurante como agregar, actualizar, extraer y eliminar datos.
 
-1. Comidas
-2. Ventas
-3. Información de usuarios registrados
+    - Comidas
+    - Ventas
+    - Información de usuarios registrados
 
 - Barra de Busqueda
 Esta barra de búsqueda permite el facíl acceso a encontrar una comida específica hecha por el usuario de manera más rápida.
@@ -38,18 +38,18 @@ Esta barra de búsqueda permite el facíl acceso a encontrar una comida específ
 - Registro de Usuario e Inicio de Sesión
 Tendrá la funcionalidad de resgitarse al sistema e iniciar sesión.
 
-Un usuario puede crear un cuenta con:
+    1. Un usuario puede crear un cuenta con:
 
-1. Nombre Completo
-2. Nombre de Usuario
-3. Contraseña
-4. Fecha Nacimiento
-5. Correo Electrónico
+        - Nombre Completo
+        - Nombre de Usuario
+        - Contraseña
+        - Fecha Nacimiento
+        - Correo Electrónico
 
-Para iniciar sesión, solo debe usar:
+    2. Para iniciar sesión, solo debe usar:
 
-1. Nombre de Usuario
-2. Contraseña
+        - Nombre de Usuario
+        - Contraseña
 
 - Carrito de Compras
 Permite al usuario agregar las comidas que le interesen comprar, modificar la cantidad y eliminarlas. Si no hay suficiente cantidad de un producto en el inventario, se le advertirá al usuario y no se agregará al carrito.
@@ -62,14 +62,14 @@ Es necesario que el usuario a pagar, se encuentre registrado para que sea satisf
 - Apartado Administrador
 El adminisatrdor tendrá un usuario y contraseña específicapara ingresar al Sistema y pueda hacer modificaciones en la plataforma como:
 
-1. Agregar y Eliminar comidas.
-2. Editar la descripción de las comidas, categoría y precio. 
+    - Agregar y Eliminar comidas.
+    - Editar la descripción de las comidas, categoría y precio. 
 
 - Descuento por fecha
 Permite que en fechas especiales, se realicen descuentos de manera automática. 
 
-1. Cumpleaños de un Usuario.
-2. Fechas especiales.
+    - Cumpleaños de un Usuario.
+    - Fechas especiales.
 
 - Apartado de Reportes
 Generará reportes en forma de tablas de los clientes que cumplirán años el mes que empieza y las comidas que más se venden por categorías. Reportes solo visibles para el administrador.

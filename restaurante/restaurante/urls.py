@@ -15,7 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from  app_restaurante.views import ComidaListado,ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
+    path('comida/', ComidaListado.as_view(template_name = "comida/index.html"), name='leer'),
+
+    # La ruta 'detalles' en donde mostraremos una página con los detalles de un arepas o registro 
+    path('comida/detalle/<int:pk>', ComidaDetalle.as_view(template_name = "comida/detalles.html"), name='detalles'),
+
+    # La ruta 'crear' en donde mostraremos un formulario para crear un nuevo arepas o registro  
+    path('comida/crear', ComidaCrear.as_view(template_name = "comida/crear.html"), name='crear'),
+
+    # La ruta 'actualizar' en donde mostraremos un formulario para actualizar un arepas o registro de la Base de Datos 
+    path('comida/editar/<int:pk>', ComidaActualizar.as_view(template_name = "comida/actualizar.html"), name='actualizar'), 
+
+    # La ruta 'eliminar' que usaremos para eliminar un arepas o registro de la Base de Datos 
+    path('comida/eliminar/<int:pk>', ComidaEliminar.as_view(), name='eliminar'),
 ]

@@ -1,10 +1,11 @@
+from aiohttp import request
 from django.shortcuts import render
 
 # Create your views here.
 from .models import Comida_menu
 
 #Instanciamos las vistas genéricas de Django 
-
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -20,9 +21,11 @@ from django.contrib.messages.views import SuccessMessageMixin
 #Habilitamos los formularios en Django 
 from django import forms
 
-#Listado de Registro
+
 class ComidaListado(ListView):
     model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
+   
+    
 
 #Crear
 class ComidaCrear(SuccessMessageMixin, CreateView): 
@@ -58,6 +61,9 @@ class ComidaEliminar(SuccessMessageMixin, DeleteView):
 
     # Redireccionamos a la página principal luego de eliminar un registro o arepa
     def get_success_url(self): 
-        success_message = 'Arepa Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
+        success_message = 'Comida Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
         messages.success (self.request, (success_message))       
         return reverse('leer') # Redireccionamos a la vista principal 'leer'
+    
+    
+    

@@ -13,12 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django import views
 from django.contrib import admin
 from django.urls import path
+#from django.urls import include
 from  app_restaurante.views import ComidaListado,ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar
+#from .views import principal
+#from .views import principal
+#from app_restaurante.views import principal
+from django.views.generic import RedirectView
+
 
 urlpatterns = [
+    path('', RedirectView.as_view(url='/comida/', permanent=False)),
+ 
     path('admin/', admin.site.urls),
+    
     # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
     path('comida/', ComidaListado.as_view(template_name = "comida/index.html"), name='leer'),
 
@@ -32,5 +42,8 @@ urlpatterns = [
     path('comida/editar/<int:pk>', ComidaActualizar.as_view(template_name = "comida/actualizar.html"), name='actualizar'), 
 
     # La ruta 'eliminar' que usaremos para eliminar un arepas o registro de la Base de Datos 
+    
     path('comida/eliminar/<int:pk>', ComidaEliminar.as_view(), name='eliminar'),
 ]
+
+

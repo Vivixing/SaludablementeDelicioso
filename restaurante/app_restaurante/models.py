@@ -6,11 +6,15 @@ class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
     nombre = models.CharField(max_length=100, default='DEFAULT VALUE')
     precio = models.CharField(max_length=20, default='DEFAULT VALUE')
     descripcion = models.CharField(max_length=300, default='DEFAULT VALUE')
-    #stock = models.TextChoices('Si Hay', 'No hay')
     stock = models.CharField(max_length=100, default='DEFAULT VALUE')
     img = models.FileField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    #para agregar el nombre del plato en la pagina
+    def __str__(self):
+        texto="{0}"
+        return texto.format(self.nombre)
 '''
 class Usuario_restaurante(models.Model):
     nombre = models.CharField(max_length=100, default='DEFAULT VALUE')

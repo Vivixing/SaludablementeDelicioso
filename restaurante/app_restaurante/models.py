@@ -20,18 +20,25 @@ class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return  str(self.nombre) + ' '+ str(self.categoria) + '' 
+
+
 
 class Usuarios(models.Model):
+    id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
     contraseña = models.CharField(max_length=10)
     email = models.EmailField(max_length=100)
-    usuario = models.CharField(max_length=100)
     telefono = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
     nacimiento = models.DateField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return str(self.nombre) + ' ' + str(self.apellido) + ' ' 
 
 class Pedidos(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -40,11 +47,14 @@ class Pedidos(models.Model):
     cantidad = models.IntegerField()
     fecha = models.DateField(max_length=100, auto_now_add=True)
     
-    def total(self):
+    def calcular_total(self):
         return float(self.id_comida.precio) * self.cantidad
 
-    total = models.FloatField(total, blank=True, null=True)
+    total = models.FloatField(calcular_total, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.id_usuario) + ' ' + str(self.id_comida) + ' ' + str(self.cantidad) + ' ' + str(self.fecha) + ' ' + str(self.total) + ' '
+    
 class Meta:
     db_table = 'comida'
     db_table = 'usuarios'

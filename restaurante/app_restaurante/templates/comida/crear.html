@@ -35,7 +35,10 @@
             <!-- Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
             {% csrf_token %}
             
-            
+            <div class="form-group">
+                <label for="id" class="txt_negrita">ID:</label>
+                {{ form.id|add_class:"form-control" }}
+            </div>
             <div class="form-group">
                 <label for="nombre" class="txt_negrita">Nombre:</label>
                 {{ form.nombre|add_class:"form-control" }}
@@ -58,12 +61,12 @@
         
             <div class="form-group">
                 <label for="img" class="txt_negrita">Imagen:</label>
-                {{ form.img|add_class:"form-control-file" |attr:"clearable:true" }} 
+                {{ form.img|add_class:"form-control-file"|attr:"accept:image/*"}} 
             </div>
             <p>
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary mr-3">Aceptar</button>
-                <a href="./" type="submit" class="btn btn-secondary">Cancelar</a>
+                <a href="../" type="submit" class="btn btn-secondary">Cancelar</a>
             </div>
         </form>
         {# JS y jQuery Bootstrap #}

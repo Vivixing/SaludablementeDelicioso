@@ -30,13 +30,13 @@ class ComidaListado(ListView):
 #Crear
 class ComidaCrear(SuccessMessageMixin, CreateView): 
     model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Comida_menu # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    form = Comida_menu# Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
     fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
     success_message = 'Comida Creada Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
 
     # Redireccionamos a la página principal luego de crear un registro o arepa
     def get_success_url(self):        
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer') 
 
 #Leer, mostrar los detalles de la comida
 class ComidaDetalle(DetailView): 
@@ -147,3 +147,5 @@ class PedidoEliminar(SuccessMessageMixin, DeleteView):
         messages.success (self.request, (success_message))
         return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'
     
+class Index(ListView):
+    model = Comida_menu

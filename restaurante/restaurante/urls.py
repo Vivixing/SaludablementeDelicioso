@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado,ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado
+from  app_restaurante.views import ComidaListado, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -27,9 +27,11 @@ from django.views.static import serve
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/admin/', permanent=False)),
+    path('', RedirectView.as_view(url='principal/', permanent=False)),
  
     path('admin/', admin.site.urls),
+    
+    path('principal/', Index.as_view(template_name = "index.html"), name='principal'),
     
     # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
     path('comida/', ComidaListado.as_view(template_name = "comida/comida.html"), name='leer'),
@@ -45,9 +47,9 @@ urlpatterns = [
 
     # La ruta 'eliminar' que usaremos para eliminar un arepas o registro de la Base de Datos 
     
-    path('comida/eliminar/<int:pk>', ComidaEliminar.as_view(), name='eliminar'),
+    path('comida/eliminar/<int:pk>', ComidaEliminar.as_view(template_name= "comida/eliminar.html"), name='eliminar'),
 
-    path('usuario/', UsuarioListado.as_view(template_name = "usuario/usuario.html"), name='leerUsuario'),
+    path('usuario/', UsuarioListado.as_view(template_name = "usuario/usuario.html"), name='leer_usuario'),
 
     path('usuario/detalle/<int:pk>', UsuarioDetalle.as_view(template_name = "usuario/detalles.html"), name='detallesUsuario'),
 
@@ -55,9 +57,9 @@ urlpatterns = [
 
     path('usuario/actualizar/<int:pk>', UsuarioActualizar.as_view(template_name = "usuario/actualizar.html"), name='actualizarUsuario'),
 
-    path('usuario/eliminar/<int:pk>', UsuarioEliminar.as_view(), name='eliminarUsuario'),
+    path('usuario/eliminar/<int:pk>', UsuarioEliminar.as_view(template_name= "usuario/eliminar.html"), name='eliminarUsuario'),
 
-    path('pedido/', PedidoListado.as_view(template_name = "pedido/pedido.html"), name='leerPedido'),
+    path('pedido/', PedidoListado.as_view(template_name = "pedido/pedido.html"), name='leer_pedido'),
 
     path('pedido/detalle/<int:pk>', PedidoDetalle.as_view(template_name = "pedido/detalles.html"), name='detallesPedido'),
 
@@ -65,7 +67,7 @@ urlpatterns = [
 
     path('pedido/actualizar/<int:pk>', PedidoActualizar.as_view(template_name = "pedido/actualizar.html"), name='actualizarPedido'),
 
-    path('pedido/eliminar/<int:pk>', PedidoEliminar.as_view(), name='eliminar'),
+    path('pedido/eliminar/<int:pk>', PedidoEliminar.as_view(template_name= "pedido/eliminar.html"), name='eliminarPedido'),
 
 ]
 

@@ -95,15 +95,19 @@
                     <td><img src="{{comida.img.url}}" width="100px" height="100px"></td>
                    
                     <td>
+                        <form method="POST" action="eliminar/{{comida.id}}" class="d-inline-block">
+                            {% csrf_token %}
+                      
                         
                         <div class="btn-group">
                             <a href="detalle/{{comida.id}}" class="btn btn-primary btn-sm" title="Ver"><i class="fas fa-eye"></i>Detalle</a>
                             <a href="actualizar/{{comida.id}}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i>Editar</a>
-
-
-                            
-                            <form method="POST" action="eliminar/{{comida.id}}" class="d-inline-block">
-                                {% csrf_token %}
+                            <button class="btn btn-danger" onclick="return eliminar();" type="submit">
+                                Eliminar
+                              </button>
+                
+                        </div>
+                    </form>
                                
                             </form>
                         </div>

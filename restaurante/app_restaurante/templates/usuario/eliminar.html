@@ -27,23 +27,24 @@
         </thead>
         <tbody>  
     
-        {% for comida in object_list %}
+        {% for usuario in object_list %}
         <tr>
-            <td>{{ comida.nombre }}</td>
-            <td>{{ comida.precio }}</td>
-            <td>{{ comida.descripcion }}</td>
-            <td>{{ comida.stock }}</td>
-            <td>{{ comida.descripcion}} </td>
-            <td><img src="{{comida.img.url}}" width="100px" height="100px"alt="{{comida.nombre}}" class="img-fluid"></td>
-            <td>
-    
+            <td>{{ usuario.id }}</td>
+            <td>{{ usuario.nombre }}</td>
+            <td>{{ usuario.apellido }}</td>
+            <td>{{ usuario.email }}</td>
+            <td>{{ usuario.contraseña }}</td>
+            <td>{{ usuario.telefono }}</td>
+            <td>{{usuario.direccion}}</td>
+            <td>{{usuario.nacimiento}}</td>
+            
             <!-- Usaremos un formulario que realizará la tarea de eliminar un registro o postre desde la misma tabla HTML -->                        
-            <form method="POST" action="eliminar/{{comida.id}}">
+            <form method="POST" action="eliminar/{{usuario.id}}">
                 {% csrf_token %}
                 <div class="btn-group">
                 
-                <a href="detalle/{{comida.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
-                <a href="editar/{{comida.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
+                <a href="detalle/{{usuario.id}}" title="Ver" type="button" class="btn btn-success">Ver </a>
+                <a href="editar/{{usuario.id}}" title="Editar" type="button" class="btn btn-primary">Editar </a>
                 
                 <!-- Este botón ejecuta el formulario para eliminar un registro o postre en la Base de datos -->
                 <button class="btn btn-danger" onclick="return eliminar();" type="submit">

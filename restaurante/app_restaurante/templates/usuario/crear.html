@@ -28,7 +28,7 @@
  <head>
     <body>
     <div class="container" style="padding: 30px; border-radius: 10px;">
-        <h1 class="text-center mb-4">Crear nuevo plato</h1>
+        <h1 class="text-center mb-4">Crear nuevo usuario</h1>
 
         <form method="post" enctype="multipart/form-data">
 
@@ -36,30 +36,40 @@
             {% csrf_token %}
             
             
-            <div class="form-group">
+            <!-- Formulario para usuario -->
+            <div>
+                <label for="id" class="txt_negrita"> Número de Identificación:</label>
+                {{ form.id|add_class:"form-control" }}
+            </div>
+            <div>
                 <label for="nombre" class="txt_negrita">Nombre:</label>
                 {{ form.nombre|add_class:"form-control" }}
             </div>
-        
-            <div class="form-group">
-                <label for="precio" class="txt_negrita">Precio:</label>
-                {{ form.precio|add_class:"form-control" }} 
+            <div>
+                <label for="apellido" class="txt_negrita">Apellido:</label>
+                {{ form.apellido|add_class:"form-control" }}
             </div>
-        
-            <div class="form-group">
-                <label for="stock" class="txt_negrita">Stock:</label>
-                {{ form.stock|add_class:"form-control" }} 
+            <div>
+                <label for="email" class="txt_negrita">Email:</label>
+                {{ form.email|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="contraseña" class="txt_negrita">Contraseña:</label>
+                {{ form.contraseña|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="telefono" class="txt_negrita">Teléfono:</label>
+                {{ form.telefono|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="direccion" class="txt_negrita">Dirección:</label>
+                {{ form.direccion|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="nacimiento" class="txt_negrita">Fecha Nacimiento:</label>
+                {{ form.nacimiento| attr:"type:date"| add_class:"form-control"}}
             </div>
 
-            <div class="form-group">
-                <label for="categoria" class="txt_negrita">Categoría:</label>
-                {{ form.categoria|add_class:"form-control" }} 
-            </div>
-        
-            <div class="form-group">
-                <label for="img" class="txt_negrita">Imagen:</label>
-                {{ form.img|add_class:"form-control-file" |attr:"clearable:true" }} 
-            </div>
             <p>
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary mr-3">Aceptar</button>

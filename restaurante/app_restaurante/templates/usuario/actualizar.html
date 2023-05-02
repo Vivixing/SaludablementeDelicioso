@@ -32,7 +32,7 @@
  <head>
     <body>
     <div class="container" style="padding: 30px; border-radius: 10px;">
-        <h1 class="text-center mb-4">Actualizar plato</h1>
+        <h1 class="text-center mb-4">Actualizar Usuario</h1>
 
         <form method="post" enctype="multipart/form-data">
 
@@ -42,37 +42,31 @@
             <!-- Importamos la biblioteca 'widget_tweaks' -->
             {% load widget_tweaks %}
             
-            <div class="form-group">
+            <div>
                 <label for="nombre" class="txt_negrita">Nombre:</label>
                 {{ form.nombre|add_class:"form-control" }}
             </div>
-        
-            <div class="form-group">
-                <label for="precio" class="txt_negrita">Precio:</label>
-                {{ form.precio|add_class:"form-control" }} 
+            <div>
+                <label for="apellido" class="txt_negrita">Apellido:</label>
+                {{ form.apellido|add_class:"form-control" }}
             </div>
-        
-            <div class="form-group">
-                <label for="stock" class="txt_negrita">Stock:</label>
-                {{ form.stock|add_class:"form-control" }} 
+            <div>
+                <label for="email" class="txt_negrita">Email:</label>
+                {{ form.email|add_class:"form-control" }}
             </div>
-            
-            <div class="form-group">
-                <label for="categoria" class="txt_negrita">Categoría:</label>
-                {{ form.categoria|add_class:"form-control" }} 
+            <div>
+                <label for="contraseña" class="txt_negrita">Contraseña:</label>
+                {{ form.contraseña|add_class:"form-control" }}
             </div>
-
-            <div class="form-group">
-                <label for="img" class="txt_negrita">Imagen:</label>
-                {{ form.img|add_class:"form-control-file" }} 
-                <br>
-                <p class="txt_negrita">Imagen actual:</p>
-               
-            <div class="img-container mb-3">
-                <img src="{{comida.img.url}}" width="100px" height="100px" class="img-fluid" alt="{{object.nombre}}">
+            <div>
+                <label for="contraseña" class="txt_negrita">Confirmar contraseña:</label>
+                {{ form.contraseña|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="nacimiento" class="txt_negrita">Fecha de Nacimiento:</label>
+                {{ form.nacimiento|attr:"type:date"|add_class:"form-control" }}
             </div>
 
-            </div>
             <p>
             <div class="d-flex justify-content-center">
                 <button type="submit" class="btn btn-primary mr-3">Aceptar</button>

@@ -2,7 +2,7 @@ from aiohttp import request
 from django.shortcuts import render
 
 # Create your views here.
-from .models import Comida_menu, Usuarios, Pedidos
+from .models import Comida_menu, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 
 #Instanciamos las vistas genéricas de Django 
 from django.urls import reverse_lazy
@@ -21,6 +21,39 @@ from django.contrib.messages.views import SuccessMessageMixin
 #Habilitamos los formularios en Django 
 from django import forms
 
+class CategoriaListado(ListView):
+    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+
+class CategoriaCrear(SuccessMessageMixin, CreateView):
+    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    form = Categoria # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
+    success_message = 'Categoria Creada Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
+
+    # Redireccionamos a la página principal luego de crear un registro o arepa
+    def get_success_url(self):        
+        return reverse('leer')
+
+class CategoriaActualizar(SuccessMessageMixin, UpdateView):
+    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    form = Categoria # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
+    success_message = 'Categoria Actualizada Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa 
+
+    # Redireccionamos a la página principal luego de actualizar un registro o arepa
+    def get_success_url(self):               
+        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+
+class CategoriaEliminar(SuccessMessageMixin, DeleteView):
+    model = Categoria
+    form = Categoria
+    fields = "__all__"     
+
+    # Redireccionamos a la página principal luego de eliminar un registro o arepa
+    def get_success_url(self): 
+        success_message = 'Categoria Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
+        messages.success (self.request, (success_message))       
+        return reverse('leer') # Redireccionamos a la vista principal 'leer'
 
 class ComidaListado(ListView):
     model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
@@ -116,6 +149,7 @@ class PedidoCrear(SuccessMessageMixin, CreateView):
     fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
     success_message = 'Pedido Creado Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
 
+    #
     # Redireccionamos a la página principal luego de crear un registro o arepa
     def get_success_url(self):
         return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'

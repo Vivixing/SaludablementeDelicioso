@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado
+from  app_restaurante.views import ComidaListado, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -26,7 +26,20 @@ from django.views.generic import RedirectView
 from django.views.static import serve
 
 
+
+
 urlpatterns = [
+    #urls para la vista del usuario
+   path('vista_usuario/vistaPrincipal', VistaPrincipalView.as_view(), name='vista_principal'),
+   path('vista_usuario/vistaVegetariana', VistaPrincipalView.as_view(template_name="vista_usuario/vistaVegetariana.html"), name='vistaVegetariana'),
+   path('vista_usuario/vistaVegano', VistaPrincipalView.as_view(template_name="vista_usuario/vistaVegano.html"), name='vistaVegano'),
+   path('vista_usuario/vistaDiab', VistaPrincipalView.as_view(template_name="vista_usuario/vistaDiab.html"), name='vistaDiab'),
+   path('vista_usuario/vistaBebidas', VistaPrincipalView.as_view(template_name="vista_usuario/vistaBebidas.html"), name='vistaBebidas'),
+   path('vista_usuario/vistaPostre', VistaPrincipalView.as_view(template_name="vista_usuario/vistaPostre.html"), name='vistaPostre'),
+   path('vista_usuario/carritoCompra', VistaPrincipalView.as_view(template_name="vista_usuario/carritoCompra.html"), name='carritoCompra'),
+   path('vista_usuario/',  RedirectView.as_view(url='vistaPrincipal', permanent=False)),
+   
+    #urls para la vista del administrador 
     path('', RedirectView.as_view(url='principal/', permanent=False)),
  
     path('admin/', admin.site.urls),

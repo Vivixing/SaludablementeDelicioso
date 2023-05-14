@@ -22,8 +22,11 @@ class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
 
+
     def __str__(self):
         return  str(self.nombre) + ' '+ str(self.categoria) + '' 
+
+
 
 class Usuarios(models.Model):
     id = models.IntegerField(primary_key=True)

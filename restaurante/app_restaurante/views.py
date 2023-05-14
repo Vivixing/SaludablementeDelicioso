@@ -20,6 +20,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 #Habilitamos los formularios en Django 
 from django import forms
+from django.views.generic import TemplateView
 
 class CategoriaListado(ListView):
     model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
@@ -183,3 +184,8 @@ class PedidoEliminar(SuccessMessageMixin, DeleteView):
     
 class Index(ListView):
     model = Comida_menu
+    
+
+class VistaPrincipalView(TemplateView):
+    template_name = 'vista_usuario/vistaPrincipal.html'
+    

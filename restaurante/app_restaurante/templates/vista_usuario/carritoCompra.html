@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carrito de Compras</title>
+  <!-- Agrega los enlaces a los archivos de Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f2f5e9; /* Fondo en tono suave */
+      color: #333; /* Texto en tono oscuro */
+    }
+    .container {
+      margin-top: 50px;
+    }
+    .cart-item {
+      padding: 20px;
+      background-color: #fff;
+      margin-bottom: 20px;
+    }
+    .cart-item img {
+      max-width: 100px;
+      margin-right: 20px;
+    }
+    .cart-item-title {
+      font-weight: bold;
+      color: #267436; /* Verde fresco para los títulos */
+    }
+    .cart-item-price {
+      color: #888;
+      margin-top: 5px;
+    }
+    .total-price {
+      font-weight: bold;
+      font-size: 24px;
+      margin-top: 20px;
+      color: #267436; /* Verde fresco para el total */
+    }
+    .btn-primary {
+      background-color: #fbb040; /* Amarillo suave para el botón */
+      border-color: #fbb040; /* Amarillo suave para el borde del botón */
+    }
+  </style>
+</head>
+<body>
+    
+  <!-- Agrega el encabezado con opciones -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <a class="navbar-brand" href="#">SaludablementeDelicioso</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="../vista_usuario/vistaPrincipal">Inicio</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Volver</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Otras opciones</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Carrito de Compras</h1>
+    <div class="cart-item">
+      <div class="row">
+        <div class="col-md-2">
+          <img src="https://images-gmi-pmc.edge-generalmills.com/45aac2b0-2247-43e3-97e0-2e08a6e15fb7.jpg" alt="Producto">
+        </div>
+        <div class="col-md-7">
+          <h4 class="cart-item-title">Enchiladas de frijoles y queso</h4>
+          <p class="cart-item-price">Precio: $22000</p>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" value="1">
+        </div>
+      </div>
+    </div>
+    <div class="cart-item">
+      <div class="row">
+        <div class="col-md-2">
+          <img src="https://mui.kitchen/__export/1627246310334/sites/muikitchen/img/2021/07/25/pexels-shameel-mukkath-5817632.jpg_818290803.jpg" alt="Producto">
+        </div>
+        <div class="col-md-7">
+          <h4 class="cart-item-title">Limonada hiervabuena</h4>
+          <p class="cart-item-price">Precio: $5000</p>
+        </div>
+        <div class="col-md-3">
+          <input type="number" class="form-control" value="2">
+        </div>
+      </div>
+    </div>
+    <div class="total-price">Total: 27000</div>
+    <button class="btn btn-primary mt-3">Proceder al Pago</button>
+  </div>
+
+  <!-- Agrega los enlaces a los archivos de Bootstrap y jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+

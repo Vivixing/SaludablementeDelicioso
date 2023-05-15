@@ -44,7 +44,7 @@
       height: 200px;
       object-fit: cover;
     }
-    <style>
+
         img{
             height: 70px;
         }
@@ -85,55 +85,28 @@
   <br>
   <!-- Contenido de la categoría "vegetariana" -->
   <div class="container">
-   
     <div class="header">
-       
-      <h1>Menú platos diabeticos</h1>
+      <h1>Menú Para Diabéticos</h1>
     </div>
     <div class="row">
-
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://www.vidactual.com/rcpmaker/wp-content/uploads/2019/06/Ensalada-de-quinoa-con-verduras.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Ensalada de quinoa y vegetales</h5>
-            <p class="card-text">Descripción del plato 1.</p>
-            <p class="card-text">Precio: $16000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+      {% for item in items %}
+        <div class="col-md-4">
+          <div class="card">
+            <img src="{{ item.img.url }}" class="card-img-top" alt="{{ item.nombre }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.nombre }}</h5>
+              <p class="card-text">{{ item.descripcion }}</p>
+              <p class="card-text">{{ item.precio }}</p>
+              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://previews.123rf.com/images/nadianb/nadianb1709/nadianb170900069/85343594-pollo-salteado-con-verduras-y-s%C3%A9samo-en-la-sart%C3%A9n-comida-asi%C3%A1tica-tradicional.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Salmón con vegetales al vapor</h5>
-            <p class="card-text">Descripción del plato 2</p>
-            <p class="card-text">Precio: $25000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
-      </div>
-      
-
-
-    <div class="col-md-4">
-        <div class="card">
-          <img src="https://assets.unileversolutions.com/recipes-v2/210886.jpg" class="card-img-top" alt="Plato 3">
-          <div class="card-body">
-            <h5 class="card-title">Stir-fry de pollo y verduras</h5>
-            <p class="card-text">Descripción del plato 3</p>
-            <p class="card-text">Precio: $21000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
+      {% empty %}
+        <p>No hay elementos en el menú</p>
+      {% endfor %}
     </div>
-    
-    </footer>
-
-</div>
+  </div>
+  
 </body>
 
  

@@ -45,7 +45,6 @@
     }
 
 
-    <style>
         img{
             height: 70px;
         }
@@ -86,57 +85,28 @@
   <br>
   <!-- Contenido de la categoría "vegetariana" -->
   <div class="container">
-   
     <div class="header">
-       
       <h1>Menú Vegano</h1>
     </div>
     <div class="row">
-
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://cdn7.kiwilimon.com/recetaimagen/34703/40304.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Ensalada de quinoa y aguacate</h5>
-            <p class="card-text">Descripción del plato 1.</p>
-            <p class="card-text">Precio: $16700</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+      {% for item in items %}
+        <div class="col-md-4">
+          <div class="card">
+            <img src="{{ item.img.url }}" class="card-img-top" alt="{{ item.nombre }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.nombre }}</h5>
+              <p class="card-text">{{ item.descripcion }}</p>
+              <p class="card-text">{{ item.precio }}</p>
+              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+            </div>
           </div>
         </div>
-      </div>
-
-      
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://assets.kraftfoods.com/recipe_images/opendeploy/74417_640x428.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Ensalada de quinoa y aguacate</h5>
-            <p class="card-text">Descripción del plato 1.</p>
-            <p class="card-text">Precio: $17000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
-      </div>
-
-
-
-    <div class="col-md-4">
-        <div class="card">
-          <img src="https://images.aws.nestle.recipes/original/f8711355ef731a722f133451ffb1c34a_curry_lentejas_2320-nologo.jpg" class="card-img-top" alt="Plato 3">
-          <div class="card-body">
-            <h5 class="card-title">Curry de lentejas</h5>
-            <p class="card-text">Descripción del plato 3.</p>
-            <p class="card-text">Precio: $20400</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
+      {% empty %}
+        <p>No hay elementos en el menú</p>
+      {% endfor %}
     </div>
-    
-    </footer>
-
-</div>
+  </div>
+  
 </body>
 
  

@@ -44,7 +44,7 @@
       height: 200px;
       object-fit: cover;
     }
-    <style>
+
         img{
             height: 70px;
         }
@@ -90,47 +90,24 @@
       <h1>Menú Postres</h1>
     </div>
     <div class="row">
-
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://cdn0.recetasgratis.net/es/posts/4/3/0/yogur_con_frutas_35034_orig.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Yogur con frutas frescas</h5>
-            <p class="card-text">Descripción del plato 1.</p>
-            <p class="card-text">Precio: $9300</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+      {% for item in items %}
+        <div class="col-md-4">
+          <div class="card">
+            <img src="{{ item.img.url }}" class="card-img-top" alt="{{ item.nombre }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.nombre }}</h5>
+              <p class="card-text">{{ item.descripcion }}</p>
+              <p class="card-text">{{ item.precio }}</p>
+              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://www.recetasnestle.com.ec/sites/default/files/srh_recipes/f20ac7a04bfc05258302812aa4ab5af4.jpg" class="card-img-top" alt="Plato 2">
-          <div class="card-body">
-            <h5 class="card-title">Pudín de chía</h5>
-            <p class="card-text">Descripción del plato 2.</p>
-            <p class="card-text">Precio: $7500</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
+      {% empty %}
+        <p>No hay elementos en el menú</p>
+      {% endfor %}
     </div>
-
-    <div class="col-md-4">
-        <div class="card">
-          <img src="https://n9z4u8f2.rocketcdn.me/wp-content/uploads/2018/08/Mousse-de-palta-y-chocolate04.jpg" class="card-img-top" alt="Plato 3">
-          <div class="card-body">
-            <h5 class="card-title">Mousse de chocolate y aguacate</h5>
-            <p class="card-text">Descripción del plato 3.</p>
-            <p class="card-text">Precio: $10000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
-    </div>
-    
-    </footer>
-
-</div>
+  </div>
+  
 </body>
 
  

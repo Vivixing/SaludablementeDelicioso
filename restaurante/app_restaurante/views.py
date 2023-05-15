@@ -3,11 +3,15 @@ from django.shortcuts import render
 
 # Create your views here.
 from .models import Comida_menu, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
-
+from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
 #Instanciamos las vistas genéricas de Django 
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView 
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth import logout
+from django.contrib.auth.views import LogoutView
+
 
 #Nos sirve para redireccionar despues de una acción revertiendo patrones de expresiones regulares 
 from django.urls import reverse
@@ -21,6 +25,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 #Habilitamos los formularios en Django 
 from django import forms
 from django.views.generic import TemplateView
+from django.contrib.auth.views import LoginView
 
 class CategoriaListado(ListView):
     model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
@@ -33,7 +38,7 @@ class CategoriaCrear(SuccessMessageMixin, CreateView):
 
     # Redireccionamos a la página principal luego de crear un registro o arepa
     def get_success_url(self):        
-        return reverse('leer')
+        return reverse('leer_categoria')
 
 class CategoriaActualizar(SuccessMessageMixin, UpdateView):
     model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
@@ -43,7 +48,7 @@ class CategoriaActualizar(SuccessMessageMixin, UpdateView):
 
     # Redireccionamos a la página principal luego de actualizar un registro o arepa
     def get_success_url(self):               
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_categoria') # Redireccionamos a la vista principal 'leer'
 
 class CategoriaEliminar(SuccessMessageMixin, DeleteView):
     model = Categoria
@@ -54,7 +59,7 @@ class CategoriaEliminar(SuccessMessageMixin, DeleteView):
     def get_success_url(self): 
         success_message = 'Categoria Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
         messages.success (self.request, (success_message))       
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_categoria') # Redireccionamos a la vista principal 'leer'
 
 class ComidaListado(ListView):
     model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
@@ -108,9 +113,10 @@ class UsuarioCrear(SuccessMessageMixin, CreateView):
     form = Usuarios # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
     fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
     success_message = 'Usuario Creado Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
-
+    
     # Redireccionamos a la página principal luego de crear un registro o arepa
     def get_success_url(self):
+     
         return reverse('leer_usuario') # Redireccionamos a la vista principal 'leer'
 
 #Leer, mostrar los detalles de la comida
@@ -188,4 +194,64 @@ class Index(ListView):
 
 class VistaPrincipalView(TemplateView):
     template_name = 'vista_usuario/vistaPrincipal.html'
+
+def vista_vegetariano(request):
+    items = Comida_menu.objects.filter(categoria='1')
+    context = {'items': items}
+    print(items)
+    return render(request, 'vista_usuario/vistaVegetariana.html', context)
+
+def vista_diabeticos(request):
+    items = Comida_menu.objects.filter(categoria='2')
+    context = {'items': items}
+    print(items)
+    return render(request, 'vista_usuario/vistaDiab.html', context)
+
+def vista_veganos(request):
+    items = Comida_menu.objects.filter(categoria='3')
+    context = {'items': items}
+    print(items)
+    return render(request, 'vista_usuario/vistaVegano.html', context)
+
+def vista_bebidas(request):
+    items = Comida_menu.objects.filter(categoria='4')
+    context = {'items': items}
+    print(items)
+    return render(request, 'vista_usuario/vistaBebidas.html', context)
+
+def vista_postres(request):
+    items = Comida_menu.objects.filter(categoria='5')
+    context = {'items': items}
+    print(items)
+    return render(request, 'vista_usuario/vistaPostre.html', context)
+
+def login_view(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        contraseña = request.POST.get('contraseña')
     
+        try:
+            user = Usuarios.objects.get(email=email)
+            if user.contraseña == contraseña:
+                # Autenticar manualmente al usuario
+                #Primero registramos el usuario para que se guarde en la base de datos de Django
+        
+                # Autenticar manualmente al usuario
+                if user is not None:
+                    login(request, user)
+                    user = authenticate(request, email=email, contraseña=contraseña)
+                    # Redirigir a la página principal
+                    messages.success(request, 'Bienvenido, {}!'.format(user.nombre))
+                    return redirect('vista_principal')
+                else:
+                    messages.error(request, 'El usuario o la contraseña son incorrectos.')
+            else:
+                messages.error(request, 'El usuario o la contraseña son incorrectos.')
+        except Usuarios.DoesNotExist:
+            messages.error(request, 'El usuario o la contraseña son incorrectos.')
+    return render(request, 'usuario/login.html')
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')

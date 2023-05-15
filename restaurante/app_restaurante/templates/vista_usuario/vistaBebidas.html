@@ -44,7 +44,7 @@
       height: 200px;
       object-fit: cover;
     }
-    <style>
+    
         img{
             height: 70px;
         }
@@ -90,47 +90,24 @@
       <h1>Menú Bebidas</h1>
     </div>
     <div class="row">
-
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://mui.kitchen/__export/1627246310334/sites/muikitchen/img/2021/07/25/pexels-shameel-mukkath-5817632.jpg_818290803.jpg" class="card-img-top" alt="Plato 1">
-          <div class="card-body">
-            <h5 class="card-title">Limonada hiervabuena</h5>
-            <p class="card-text">Descripción del plato 1.</p>
-            <p class="card-text">Precio: $5000</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+      {% for item in items %}
+        <div class="col-md-4">
+          <div class="card">
+            <img src="{{ item.img.url }}" class="card-img-top" alt="{{ item.nombre }}">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.nombre }}</h5>
+              <p class="card-text">{{ item.descripcion }}</p>
+              <p class="card-text">{{ item.precio }}</p>
+              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card">
-          <img src="https://vivirmejor.mx/wp-content/uploads/2021/02/Limonadas-Frutas-Recetas-1200x900.jpg" class="card-img-top" alt="Plato 2">
-          <div class="card-body">
-            <h5 class="card-title">Jugos naturales</h5>
-            <p class="card-text">Descripción del plato 2.</p>
-            <p class="card-text">Precio: $3500</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
+      {% empty %}
+        <p>No hay elementos en el menú</p>
+      {% endfor %}
     </div>
-
-    <div class="col-md-4">
-        <div class="card">
-          <img src="https://static.abc.es/media/bienestar/2020/06/10/te-helado-dia-mundial-kafF--1200x630@abc.jpg" class="card-img-top" alt="Plato 3">
-          <div class="card-body">
-            <h5 class="card-title">Té helado</h5>
-            <p class="card-text">Descripción del plato 3.</p>
-            <p class="card-text">Precio: $5500</p>
-            <a href="#" class="btn btn-primary">Agregar al carrito</a>
-          </div>
-        </div>
-    </div>
-    
-    </footer>
-
-</div>
+  </div>
+  
 </body>
 
  

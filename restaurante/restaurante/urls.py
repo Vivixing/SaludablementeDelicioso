@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView
+from  app_restaurante.views import ComidaListado,  vista_vegetariano, logout_view, login_view, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -31,20 +31,27 @@ from django.views.static import serve
 urlpatterns = [
     #urls para la vista del usuario
    path('vista_usuario/vistaPrincipal', VistaPrincipalView.as_view(), name='vista_principal'),
-   path('vista_usuario/vistaVegetariana', VistaPrincipalView.as_view(template_name="vista_usuario/vistaVegetariana.html"), name='vistaVegetariana'),
-   path('vista_usuario/vistaVegano', VistaPrincipalView.as_view(template_name="vista_usuario/vistaVegano.html"), name='vistaVegano'),
-   path('vista_usuario/vistaDiab', VistaPrincipalView.as_view(template_name="vista_usuario/vistaDiab.html"), name='vistaDiab'),
-   path('vista_usuario/vistaBebidas', VistaPrincipalView.as_view(template_name="vista_usuario/vistaBebidas.html"), name='vistaBebidas'),
-   path('vista_usuario/vistaPostre', VistaPrincipalView.as_view(template_name="vista_usuario/vistaPostre.html"), name='vistaPostre'),
+   path('vista_usuario/vistaVegetariana', vista_vegetariano , name='vistaVegetariana'),
+   path('vista_usuario/vistaVegano',vista_veganos, name='vistaVegano'),
+   path('vista_usuario/vistaDiab', vista_diabeticos, name='vistaDiab'),
+   path('vista_usuario/vistaBebidas',vista_bebidas, name='vistaBebidas'),
+   path('vista_usuario/vistaPostre', vista_postres, name='vistaPostre'),
    path('vista_usuario/carritoCompra', VistaPrincipalView.as_view(template_name="vista_usuario/carritoCompra.html"), name='carritoCompra'),
    path('vista_usuario/',  RedirectView.as_view(url='vistaPrincipal', permanent=False)),
-   
+   path('usuario/login', login_view, name='login'),
+   path('usuario/logout', logout_view, name='logout'),
+
     #urls para la vista del administrador 
     path('', RedirectView.as_view(url='principal/', permanent=False)),
  
     path('admin/', admin.site.urls),
     
     path('principal/', Index.as_view(template_name = "index.html"), name='principal'),
+
+    path('categoria/', Index.as_view(template_name = "categoria/categoria.html"), name='categoria'),
+    path('categoria/detalle/<int:pk>', Index.as_view(template_name = "categoria/detalles.html"), name='detallesCategoria'),
+    path('categoria/crear', Index.as_view(template_name = "categoria/crear.html"), name='crearCategoria'),
+    
     
     # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
     path('comida/', ComidaListado.as_view(template_name = "comida/comida.html"), name='leer'),

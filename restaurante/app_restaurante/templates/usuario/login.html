@@ -28,42 +28,19 @@
  <head>
     <body>
     <div class="container" style="padding: 30px; border-radius: 10px;">
-        <h1 class="text-center mb-4">Crear nuevo usuario</h1>
+        <h1 class="text-center mb-4">Iniciar Sesión</h1>
 
         <form method="post" enctype="multipart/form-data">
 
             <!-- Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
             {% csrf_token %}
-            
-            
-            <!-- Formulario para usuario -->
-            <div>
-                <label for="nombre" class="txt_negrita">Nombre:</label>
-                {{ form.nombre|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="apellido" class="txt_negrita">Apellido:</label>
-                {{ form.apellido|add_class:"form-control" }}
-            </div>
             <div>
                 <label for="email" class="txt_negrita">Email:</label>
-                {{ form.email|add_class:"form-control" }}
+                <input type="email" name="email" class="form-control" required>
             </div>
             <div>
                 <label for="contraseña" class="txt_negrita">Contraseña:</label>
-                {{ form.contraseña|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="telefono" class="txt_negrita">Teléfono:</label>
-                {{ form.telefono|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="direccion" class="txt_negrita">Dirección:</label>
-                {{ form.direccion|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="nacimiento" class="txt_negrita">Fecha Nacimiento:</label>
-                {{ form.nacimiento| attr:"type:date"| add_class:"form-control"}}
+                <input type="password" name="contraseña" class="form-control" required>
             </div>
 
             <p>
@@ -78,3 +55,4 @@
     </div>
 </body>
 <html>
+

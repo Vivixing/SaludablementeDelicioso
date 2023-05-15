@@ -32,7 +32,7 @@ class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
 class Usuarios(models.Model):
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    contraseña = models.CharField(max_length=10)
+    contraseña = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     telefono = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)

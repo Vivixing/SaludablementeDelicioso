@@ -1,6 +1,8 @@
 from aiohttp import request
 from django.shortcuts import render
 
+from django.contrib.auth.hashers import make_password
+
 # Create your views here.
 from .models import Comida_menu, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 from django.contrib.auth import authenticate, login
@@ -289,21 +291,23 @@ def limpiar_carrito(request):
     request.session['carrito'] = []
     return redirect('mostrar_carrito')
 
+
 def login_view(request, *args, **kwargs):
-    user = Usuarios.objects.all()
-    ingresar = request.POST
-    context={'user':user, 'nombre':'noRegistrado'}
-    if(request.method == 'POST'):
-        aux = Usuarios(
-            nombre=ingresar.get('username'),
-            email=ingresar.get('holi@gmail.com'),
-            contraseña=ingresar.get('password'),
-        )
-        nombre=ingresar.get('username')
-        if (aux.autenticarUsuario()):
-            context={'user':user, 'nombre':nombre}
-            messages.success(request, f'¡Bienvenido {nombre}!')
-            return render(request, 'vista_principal', context,{})
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        email = request.POST.get('email')
+
+        # Authenticate the user
+        user = Usuarios.objects.filter(nombre=username, contraseña=password, email=email).first()
+        if user:
+            # Authentication successful
+            context = {'user': user, 'nombre': username}
+            messages.success(request, f'¡Bienvenido {username}!')
+            return render(request, 'vista_principal.html', context)
         else:
-            messages.info(request, 'Cuenta de usuario o contraseña invalida')
-    return render(request, 'usuario/login.html', context,{'form':ingresar})
+            # Authentication failed
+            messages.info(request, 'Cuenta de usuario o contraseña inválida')
+
+    return render(request, 'usuario/login.html', {})
+

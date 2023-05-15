@@ -1,3 +1,4 @@
+import hashlib
 from django.db import models
 
 # Create your models here.
@@ -13,7 +14,7 @@ class Categoria(models.Model):
 class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
     id = models.IntegerField(primary_key=True)
     nombre = models.CharField(max_length=100)
-    precio = models.CharField(max_length=20,)
+    precio = models.PositiveIntegerField()
     descripcion = models.CharField(max_length=300)
     stock = models.CharField(max_length=100)
     #Recoger los datos de la tabla categoria
@@ -41,6 +42,20 @@ class Usuarios(models.Model):
     last_login = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return str(self.nombre) + ' ' + str(self.apellido) + ' ' 
+    
+    def save(self, *args, **kwargs):
+        self.contraseña = hashlib.md5(self.contraseña.encode('utf-8')).hexdigest()
+        super(Usuarios, self).save(*args, **kwargs)
+
+    # Autenticar Usuario
+    def autenticarUsuario(self, *args, **kwargs):
+        auth = Usuarios.objects.filter(nombre=self.nombre,contraseña=hashlib.md5(self.contraseña.encode('utf-8')).hexdigest()).exists()
+        return auth
+    
+    # Buscar Usuario
+    def buscarUsuario(self, *args, **kwargs):
+        aux = Usuarios.objects.filter(nombre=self.nombre,contraseña=hashlib.md5(self.contraseña.encode('utf-8')).hexdigest())
+        return aux
 
 class Pedidos(models.Model):
     id = models.IntegerField(primary_key=True)

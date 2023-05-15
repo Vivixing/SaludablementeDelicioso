@@ -255,3 +255,55 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+
+def agregar_producto(request, pk):
+    producto = Comida_menu.objects.filter(pk=pk).first()
+    carrito = request.session.get('carrito', [])
+    carrito.append((producto.id))
+    request.session['carrito'] = carrito
+    return redirect('mostrar_carrito')
+
+def mostrar_carrito(request):
+    carrito_ids = request.session.get('carrito', [])
+    carrito = Comida_menu.objects.filter(id__in=carrito_ids)
+    total = sum((producto.precio for producto in carrito))
+    
+    return render(request, 'vista_usuario/carritoCompra.html', {'carrito': carrito, 'total': total})
+
+def actualizar_cantidad(request,pk):
+    cantidad = request.POST.get('cantidad')
+    producto = Comida_menu.objects.filter(pk=pk).first()
+    carrito = request.session.get('carrito', [])
+    carrito.append((producto.id))
+    request.session['carrito'] = carrito
+    return redirect('mostrar_carrito')
+
+def eliminar_producto(request, pk):
+    carrito = request.session.get('carrito', [])
+    carrito.remove((pk))
+    request.session['carrito'] = carrito
+    return redirect('mostrar_carrito')
+
+def limpiar_carrito(request):
+    request.session['carrito'] = []
+    return redirect('mostrar_carrito')
+
+def login_view(request, *args, **kwargs):
+    user = Usuarios.objects.all()
+    ingresar = request.POST
+    context={'user':user, 'nombre':'noRegistrado'}
+    if(request.method == 'POST'):
+        aux = Usuarios(
+            nombre=ingresar.get('username'),
+            email=ingresar.get('holi@gmail.com'),
+            contraseña=ingresar.get('password'),
+        )
+        nombre=ingresar.get('username')
+        if (aux.autenticarUsuario()):
+            context={'user':user, 'nombre':nombre}
+            messages.success(request, f'¡Bienvenido {nombre}!')
+            return render(request, 'vista_principal', context,{})
+        else:
+            messages.info(request, 'Cuenta de usuario o contraseña invalida')
+    return render(request, 'usuario/login.html', context,{'form':ingresar})

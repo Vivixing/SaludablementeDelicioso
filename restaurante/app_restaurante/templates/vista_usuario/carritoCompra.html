@@ -72,36 +72,41 @@
 
   <div class="container">
     <h1>Carrito de Compras</h1>
+    {% for producto in carrito %}
     <div class="cart-item">
       <div class="row">
         <div class="col-md-2">
-          <img src="https://images-gmi-pmc.edge-generalmills.com/45aac2b0-2247-43e3-97e0-2e08a6e15fb7.jpg" alt="Producto">
+          <img src="{{producto.img.url}}" alt="Producto">
         </div>
         <div class="col-md-7">
-          <h4 class="cart-item-title">Enchiladas de frijoles y queso</h4>
-          <p class="cart-item-price">Precio: $22000</p>
-        </div>
+          <h4 class="cart-item-title">{{producto.nombre}}</h4>
+          <p class="cart-item-price">{{producto.precio}}</p>
+        </div> 
         <div class="col-md-3">
-          <input type="number" class="form-control" value="1">
+          <form method="post" action="{% url 'actualizar_cantidad' pk=producto.id %}">
+            {% csrf_token %}
+            <input type="number" class="form-control" value=1  name="cantidad" onchange="this.form.submit()">
+          </form>
         </div>
+        </div>
+        <form method="post" action="{% url 'eliminar_producto' pk=producto.id %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
       </div>
     </div>
-    <div class="cart-item">
-      <div class="row">
-        <div class="col-md-2">
-          <img src="https://mui.kitchen/__export/1627246310334/sites/muikitchen/img/2021/07/25/pexels-shameel-mukkath-5817632.jpg_818290803.jpg" alt="Producto">
-        </div>
-        <div class="col-md-7">
-          <h4 class="cart-item-title">Limonada hiervabuena</h4>
-          <p class="cart-item-price">Precio: $5000</p>
-        </div>
-        <div class="col-md-3">
-          <input type="number" class="form-control" value="2">
-        </div>
-      </div>
-    </div>
-    <div class="total-price">Total: 27000</div>
+   
+    
+    <p>Total: ${{ total }}</p>
     <button class="btn btn-primary mt-3">Proceder al Pago</button>
+    <p></p>
+    <form method="post" action="{% url 'limpiar_carrito' %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Limpiar Carrito</button>
+    </form>
   </div>
 
   <!-- Agrega los enlaces a los archivos de Bootstrap y jQuery -->
@@ -110,4 +115,3 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-

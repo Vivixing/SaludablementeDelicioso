@@ -76,6 +76,9 @@
         <li class="nav-item">
           <a class="nav-link" href="../vista_usuario/vistaPrincipal">Inicio</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="../vista_usuario/mostrar_carrito">Carrito</a>
+        </li>
         <li class="nav-item active">
           <a class="nav-link" href="#">Postres</a>
         </li>
@@ -98,7 +101,7 @@
               <h5 class="card-title">{{ item.nombre }}</h5>
               <p class="card-text">{{ item.descripcion }}</p>
               <p class="card-text">{{ item.precio }}</p>
-              <a href="#" class="btn btn-primary">Agregar al carrito</a>
+              <a href="../vista_usuario/agregar_producto/{{item.id}}" class="btn btn-primary">Agregar al carrito</a>
             </div>
           </div>
         </div>

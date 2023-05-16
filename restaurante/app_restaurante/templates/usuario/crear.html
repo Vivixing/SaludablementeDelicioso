@@ -30,48 +30,127 @@
     <div class="container" style="padding: 30px; border-radius: 10px;">
         <h1 class="text-center mb-4">Crear nuevo usuario</h1>
 
-        <form method="post" enctype="multipart/form-data">
+        <form method="post">
 
             <!-- Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
             {% csrf_token %}
             
             
-            <!-- Formulario para usuario -->
-            <div>
-                <label for="nombre" class="txt_negrita">Nombre:</label>
-                {{ form.nombre|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="apellido" class="txt_negrita">Apellido:</label>
-                {{ form.apellido|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="email" class="txt_negrita">Email:</label>
-                {{ form.email|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="contraseña" class="txt_negrita">Contraseña:</label>
-                {{ form.contraseña|add_class:"form-control"|attr:"type:password" }}
-            </div>
-            <div>
-                <label for="telefono" class="txt_negrita">Teléfono:</label>
-                {{ form.telefono|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="direccion" class="txt_negrita">Dirección:</label>
-                {{ form.direccion|add_class:"form-control" }}
-            </div>
-            <div>
-                <label for="nacimiento" class="txt_negrita">Fecha Nacimiento:</label>
-                {{ form.nacimiento| attr:"type:date"| add_class:"form-control"}}
-            </div>
-
-            <p>
-            <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary mr-3">Aceptar</button>
-                <a href="./" type="submit" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </form>
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="username">Nombre de usuario:</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.username.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Correo electrónico:</label>
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.email.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="first_name">Nombre:</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.first_name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="last_name">Apellido:</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.last_name.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="password1">Contraseña:</label>
+                    {{ form.password1 }}
+                    {% if form.password1.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password1.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="password2">Confirmar contraseña:</label>
+                    {{ form.password2 }}
+                    {% if form.password2.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.password2.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefono">Teléfono:</label>
+                    {{ form.telefono }}
+                    {% if form.telefono.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.telefono.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="direccion">Dirección:</label>
+                    {{ form.direccion }}
+                    {% if form.direccion.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.direccion.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="nacimiento">Fecha de nacimiento:</label>
+                    {{ form.nacimiento|attr:'type:date' }}
+                    {% if form.nacimiento.errors %}
+                        <ul class="errorlist">
+                            {% for error in form.nacimiento.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Registrarse" class="btn btn-primary">
+                </div>
+            </form>
         {# JS y jQuery Bootstrap #}
         {% bootstrap_javascript jquery='full' %}
         

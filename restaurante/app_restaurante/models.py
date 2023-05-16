@@ -1,5 +1,6 @@
 import hashlib
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Categoria(models.Model):
@@ -30,31 +31,24 @@ class Comida_menu(models.Model):  #nombre de la tabla en la Base de Datos
 
 
 class Usuarios(models.Model):
-    nombre = models.CharField(max_length=100)
-    apellido = models.CharField(max_length=100)
-    contraseña = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     telefono = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
     nacimiento = models.DateField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
-    last_login = models.DateTimeField(auto_now_add=True)
+
     def __str__(self):
-        return str(self.nombre) + ' ' + str(self.apellido) + ' ' 
-    
-    def save(self, *args, **kwargs):
-        self.contraseña = hashlib.md5(self.contraseña.encode('utf-8')).hexdigest()
-        super(Usuarios, self).save(*args, **kwargs)
+        return str(self.usuario.first_name) + ' ' + str(self.usuario.last_name) + ' ' 
 
     # Autenticar Usuario
     def autenticarUsuario(self, *args, **kwargs):
-        auth = Usuarios.objects.filter(nombre=self.nombre,contraseña=hashlib.md5(self.contraseña.encode('utf-8')).hexdigest()).exists()
+        auth = Usuarios.objects.filter(nombre=self.usuario.first_name,contraseña=hashlib.md5(self.usuario.password.encode('utf-8')).hexdigest()).exists()
         return auth
     
     # Buscar Usuario
     def buscarUsuario(self, *args, **kwargs):
-        aux = Usuarios.objects.filter(nombre=self.nombre,contraseña=hashlib.md5(self.contraseña.encode('utf-8')).hexdigest())
+        aux = Usuarios.objects.filter(nombre=self.usuario.first_name,contraseña=hashlib.md5(self.usuario.password.encode('utf-8')).hexdigest())
         return aux
 
 class Pedidos(models.Model):

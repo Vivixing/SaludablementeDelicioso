@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, login_view, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos
+from  app_restaurante.views import ComidaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -38,7 +38,7 @@ urlpatterns = [
    path('vista_usuario/vistaPostre', vista_postres, name='vistaPostre'),
    path('vista_usuario/carritoCompra', VistaPrincipalView.as_view(template_name="vista_usuario/carritoCompra.html"), name='carritoCompra'),
    path('vista_usuario/',  RedirectView.as_view(url='vistaPrincipal', permanent=False)),
-   path('usuario/login', login_view, name='login'),
+   path('usuario/login', LoginView.as_view(template_name="usuario/login.html"), name='login'),
    path('usuario/logout', logout_view, name='logout'),
    path('vista_usuario/agregar_producto/<int:pk>/', agregar_producto, name='agregar_producto'),
     path('vista_usuario/mostrar_carrito/', mostrar_carrito, name='mostrar_carrito'),

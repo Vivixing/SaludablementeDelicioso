@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 from django.contrib.auth.hashers import make_password
 
+from .forms import LoginForm, UsuarioForm
+
 # Create your views here.
 from .models import Comida_menu, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 from django.contrib.auth import authenticate, login
@@ -116,16 +118,20 @@ class UsuarioListado(ListView):
 #Crear
 class UsuarioCrear(SuccessMessageMixin, CreateView):
     model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Usuarios # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
-    success_message = 'Usuario Creado Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
-    
-    # Redireccionamos a la página principal luego de crear un registro o arepa
-    def get_success_url(self):
-     
-        return reverse('leer_usuario') # Redireccionamos a la vista principal 'leer'
-
-#Leer, mostrar los detalles de la comida
+    form_class = UsuarioForm # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    def form_valid(self, form):
+            form.save()
+            usuario = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            usuario = authenticate(username=usuario, password=password)
+            telefono = form.cleaned_data.get('telefono')
+            direccion = form.cleaned_data.get('direccion')
+            nacimiento = form.cleaned_data.get('nacimiento')
+            usuarioBD = Usuarios(telefono=telefono, direccion=direccion, nacimiento=nacimiento, usuario=usuario)
+            usuarioBD.save()
+            login(self.request, usuario)
+            return redirect('vista_principal')
+    #Leer, mostrar los detalles de la comida
 class UsuarioDetalle(DetailView):
     model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
 
@@ -296,21 +302,9 @@ def limpiar_carrito(request):
     request.session['carrito'] = []
     return redirect('mostrar_carrito')
 
+class Login_view(LoginView):
+    template_name = 'usuario/login.html'
 
-
-
-
-def login_view(request, *args, **kwargs):
-    if request.method == 'POST':
-        email = request.POST['email']
-        password = request.POST['contraseña']
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('vista_principal')  # Redirect to the dashboard or any other desired page
-        else:
-            return redirect('vista_principal')
-            #messages.error(request, 'Invalid email or password.')
-    
-    return render(request, 'usuario/login.html')
-
+def logout_view(request):
+    logout(request)
+    return redirect('login')

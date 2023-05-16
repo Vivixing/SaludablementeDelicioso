@@ -5,19 +5,15 @@
   <title>Login</title>
 </head>
 <body>
-  <h1>Login</h1>
-  {% if messages %}
-    {% for message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
-    <label for="contraseña">contraseña:</label>
-    <input type="password" id="password" name="contraseña" required><br>
-    <input type="submit" value="Login">
-  </form>
+{% block title %}Inicia Sesión{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" name="submit">
+    </form>
+
+{% endblock content %}
 </body>
 </html>

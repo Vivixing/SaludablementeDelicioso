@@ -29,6 +29,10 @@ from django import forms
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import authenticate, login
+
 class CategoriaListado(ListView):
     model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
 
@@ -232,27 +236,28 @@ def login_view(request):
         email = request.POST.get('email')
         contraseña = request.POST.get('contraseña')
     
+        # Retrieve the user object based on the provided email
         try:
             user = Usuarios.objects.get(email=email)
-            if user.contraseña == contraseña:
-                # Autenticar manualmente al usuario
-                #Primero registramos el usuario para que se guarde en la base de datos de Django
-        
-                # Autenticar manualmente al usuario
-                if user is not None:
-                    login(request, user)
-                    user = authenticate(request, email=email, contraseña=contraseña)
-                    # Redirigir a la página principal
-                    messages.success(request, 'Bienvenido, {}!'.format(user.nombre))
-                    return redirect('vista_principal')
-                else:
-                    messages.error(request, 'El usuario o la contraseña son incorrectos.')
-            else:
-                messages.error(request, 'El usuario o la contraseña son incorrectos.')
         except Usuarios.DoesNotExist:
-            messages.error(request, 'El usuario o la contraseña son incorrectos.')
-    return render(request, 'usuario/login.html')
+            user = None
 
+        if user is not None and user.check_password(contraseña):
+            # Authenticate the user
+            authenticated_user = authenticate(request, username=user.email, password=contraseña)
+
+            if authenticated_user is not None:
+                # Login the authenticated user
+                login(request, authenticated_user)
+                
+                # Redirect to the main view
+                return redirect('./vista_usuario/vista_principal')
+            else:
+                messages.error(request, 'Failed to authenticate user.')
+        else:
+            messages.error(request, 'Incorrect email or password.')
+
+    return render(request, 'usuario/login.html')
 
 def logout_view(request):
     logout(request)
@@ -292,22 +297,20 @@ def limpiar_carrito(request):
     return redirect('mostrar_carrito')
 
 
+
+
+
 def login_view(request, *args, **kwargs):
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-
-        # Authenticate the user
-        user = Usuarios.objects.filter(nombre=username, contraseña=password, email=email).first()
-        if user:
-            # Authentication successful
-            context = {'user': user, 'nombre': username}
-            messages.success(request, f'¡Bienvenido {username}!')
-            return render(request, 'vista_principal.html', context)
+        email = request.POST['email']
+        password = request.POST['contraseña']
+        user = authenticate(request, email=email, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('vista_principal')  # Redirect to the dashboard or any other desired page
         else:
-            # Authentication failed
-            messages.info(request, 'Cuenta de usuario o contraseña inválida')
-
-    return render(request, 'usuario/login.html', {})
+            return redirect('vista_principal')
+            #messages.error(request, 'Invalid email or password.')
+    
+    return render(request, 'usuario/login.html')
 

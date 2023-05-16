@@ -45,6 +45,11 @@ urlpatterns = [
     path('vista_usuario/actualizar_cantidad/<int:pk>/', actualizar_cantidad, name='actualizar_cantidad'),
     path('vista_usuario/eliminar_producto/<int:pk>/', eliminar_producto, name='eliminar_producto'),
     path('vista_usuario/limpiar_carrito/', limpiar_carrito, name='limpiar_carrito'),
+    path('vista_usuario/factura', VistaPrincipalView.as_view(template_name="vista_usuario/factura.html"), name='factura'),
+     
+    
+    
+    
     #urls para la vista del administrador 
     path('', RedirectView.as_view(url='vista_usuario/vistaPrincipal', permanent=False)),
 
@@ -92,6 +97,8 @@ urlpatterns = [
     path('pedido/actualizar/<int:pk>', PedidoActualizar.as_view(template_name = "pedido/actualizar.html"), name='actualizarPedido'),
 
     path('pedido/eliminar/<int:pk>', PedidoEliminar.as_view(template_name= "pedido/eliminar.html"), name='eliminarPedido'),
+    
+    
 
 ]
 

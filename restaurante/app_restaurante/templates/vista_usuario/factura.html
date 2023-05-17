@@ -60,13 +60,13 @@
           </thead>
           <tbody>
             {% block items %}
-            {% for pedido in pedidos %}
-                <tr>
-                  <td>{{ pedido.id_comida.nombre }}</td>
-                  <td>{{ pedido.cantidad }}</td>
-                  <td>{{ pedido.id_comida.precio }}</td>
-                  <td></td>
-                </tr>
+            {% for pedido, precio_calculado in zipped_data %}
+            <tr>
+                <td>{{ pedido.id_comida.nombre }}</td>
+                <td>{{ pedido.cantidad }}</td>
+                <td>{{ pedido.id_comida.precio }}</td>
+                <td>{{ precio_calculado }}</td>
+            </tr>
             {% endfor %}
             {% endblock items %}
           </tbody>

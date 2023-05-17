@@ -101,7 +101,7 @@
    
     
     <p>Total: ${{ total }}</p>
-    <button class="btn btn-primary mt-3">Proceder al Pago</button>
+    <button class="btn btn-primary mt-3"><a href="../factura">Proceder al Pago</a</button>
     <p></p>
     <form method="post" action="{% url 'limpiar_carrito' %}">
       {% csrf_token %}

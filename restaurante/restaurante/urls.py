@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos
+from  app_restaurante.views import ComidaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos, factura
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -45,8 +45,8 @@ urlpatterns = [
     path('vista_usuario/actualizar_cantidad/<int:pk>/', actualizar_cantidad, name='actualizar_cantidad'),
     path('vista_usuario/eliminar_producto/<int:pk>/', eliminar_producto, name='eliminar_producto'),
     path('vista_usuario/limpiar_carrito/', limpiar_carrito, name='limpiar_carrito'),
-    path('vista_usuario/factura', VistaPrincipalView.as_view(template_name="vista_usuario/factura.html"), name='factura'),
-     
+    #path('vista_usuario/factura', VistaPrincipalView.as_view(template_name="vista_usuario/factura.html"), name='factura'),
+    path('vista_usuario/factura/', factura, name='factura'),
     
     
     

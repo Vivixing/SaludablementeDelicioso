@@ -1,8 +1,10 @@
+import datetime
+import random
 from aiohttp import request
 from django.shortcuts import render
-
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-
+from datetime import date
 from .forms import LoginForm, UsuarioForm
 
 # Create your views here.
@@ -270,36 +272,77 @@ def logout_view(request):
     return redirect('login')
 
 
+@login_required
 def agregar_producto(request, pk):
     producto = Comida_menu.objects.filter(pk=pk).first()
     carrito = request.session.get('carrito', [])
-    carrito.append((producto.id))
+    carrito.append(pk)  # Agregar solo el ID del producto al carrito
     request.session['carrito'] = carrito
+    cantidad = request.POST.get('cantidad')
+    if cantidad is None:
+        cantidad = 1
+    
+    # Obtener instancia de Usuarios del usuario actual
+    usuario = Usuarios.objects.get(usuario=request.user)
+
+    # Crear instancia de Pedidos
+    pedido = Pedidos(
+        id_usuario=usuario,
+        id_comida=producto,
+        cantidad=cantidad,
+    )
+    pedido.save()
+    
     return redirect('mostrar_carrito')
 
 def mostrar_carrito(request):
     carrito_ids = request.session.get('carrito', [])
     carrito = Comida_menu.objects.filter(id__in=carrito_ids)
-    total = sum((producto.precio for producto in carrito))
-    
+    total = sum((producto.precio * carrito_ids.count(producto.id) for producto in carrito))
+    carrito_cantidades = {producto.id: carrito_ids.count(producto.id) for producto in carrito}
     return render(request, 'vista_usuario/carritoCompra.html', {'carrito': carrito, 'total': total})
 
-def actualizar_cantidad(request,pk):
-    cantidad = request.POST.get('cantidad')
-    producto = Comida_menu.objects.filter(pk=pk).first()
+def actualizar_cantidad(request, pk):
     carrito = request.session.get('carrito', [])
-    carrito.append((producto.id))
+    cantidad_actualizada = request.POST.get('cantidad')
+    cantidad_actualizada = int(cantidad_actualizada)
+    Usuario= Usuarios.objects.get(usuario=request.user)
+    if cantidad_actualizada>=1:
+        carrito.append(pk)# Agregar solo el ID del producto al carrito
+    if cantidad_actualizada < 1:
+        carrito.remove(pk)
+        
+    # Obtener el pedido asociado al producto y al usuario actual
+    pedido = Pedidos.objects.get(id_comida=pk, id_usuario=Usuario, fecha=datetime.date.today())
+    pedido.cantidad = cantidad_actualizada
+    pedido.save()
+
     request.session['carrito'] = carrito
     return redirect('mostrar_carrito')
 
 def eliminar_producto(request, pk):
     carrito = request.session.get('carrito', [])
-    carrito.remove((pk))
+    carrito.remove(pk)
     request.session['carrito'] = carrito
+    
+    # Obtener el usuario actual
+    usuario = Usuarios.objects.get(usuario=request.user)
+    
+    # Eliminar los elementos de pedido asociados al producto eliminado y al usuario actual
+    Pedidos.objects.filter(id_comida=pk, id_usuario=usuario).delete()
+    
     return redirect('mostrar_carrito')
 
 def limpiar_carrito(request):
+    carrito = request.session.get('carrito', [])
     request.session['carrito'] = []
+    
+    # Obtener el usuario actual
+    usuario = Usuarios.objects.get(usuario=request.user)
+    
+    # Eliminar todos los elementos de pedido asociados a los productos en el carrito y al usuario actual
+    Pedidos.objects.filter(id_comida__in=carrito, id_usuario=usuario).delete()
+    
     return redirect('mostrar_carrito')
 
 class Login_view(LoginView):
@@ -308,3 +351,27 @@ class Login_view(LoginView):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+def factura(request):
+    # Obtener el usuario actual
+    usuario = Usuarios.objects.get(usuario=request.user)
+
+    # Obtener los pedidos del usuario actual para la fecha actual
+    pedidos = Pedidos.objects.filter(id_usuario=usuario, fecha=datetime.date.today())
+
+
+    # Obtener los IDs de las comidas en los pedidos
+    comidas_ids = pedidos.values_list('id_comida', flat=True)
+
+    # Obtener las comidas correspondientes a los IDs
+    comida_menu = Comida_menu.objects.filter(id__in=comidas_ids)
+    
+    #Creamos una lista con los precios de comida.precio * cantidad
+    fact_id = random.randint(1, 1000000000)
+
+    #Obtener la cantidad de comidas
+    fecha = datetime.date.today()
+
+    total = sum((pedido.id_comida.precio * pedido.cantidad for pedido in pedidos), 0)
+
+    return render(request, 'vista_usuario/factura.html', {'pedidos': pedidos, 'comida_menu': comida_menu, 'fecha': fecha, 'usuario': usuario, 'total': total, 'fact_id': fact_id})

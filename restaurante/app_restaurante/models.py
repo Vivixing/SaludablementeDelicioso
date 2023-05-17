@@ -52,12 +52,11 @@ class Usuarios(models.Model):
         return aux
 
 class Pedidos(models.Model):
-    id = models.IntegerField(primary_key=True)
     id_usuario = models.ForeignKey(Usuarios, to_field='id', db_column='id_usuario', on_delete=models.CASCADE)
     id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
-    cantidad = models.IntegerField()
+    cantidad = models.PositiveIntegerField()
     fecha = models.DateField(max_length=100, auto_now_add=True)
-    total = models.DecimalField(max_digits=8, decimal_places=2, editable=False)
+    total = models.DecimalField(max_digits=8, decimal_places=3, editable=False)
 
     def save(self, *args, **kwargs):
         self.total = self.id_comida.precio * self.cantidad

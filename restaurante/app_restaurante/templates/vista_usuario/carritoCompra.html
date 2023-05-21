@@ -6,9 +6,11 @@
   <title>Carrito de Compras</title>
   <!-- Agrega los enlaces a los archivos de Bootstrap -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+
   <style>
     body {
-      background-color: #f2f5e9; /* Fondo en tono suave */
+      background-color: white; /* Cambio del fondo a color #83A603 */
       color: #333; /* Texto en tono oscuro */
     }
     .container {
@@ -40,38 +42,59 @@
     .btn-primary {
       background-color: #fbb040; /* Amarillo suave para el botón */
       border-color: #fbb040; /* Amarillo suave para el borde del botón */
+      width: 50%;
     }
+    .btn-danger {
+      width: 50%; 
+    }
+    .login_icon2{
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 20px;
+      width: 50px; 
+      height: 50px; 
+
+    }
+    .cuadro {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      /* Agrega otros estilos según tus preferencias */
+    }
+    
+    
+   
+
   </style>
 </head>
 <body>
     
   <!-- Agrega el encabezado con opciones -->
   <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">SaludablementeDelicioso</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="../vistaPrincipal">Inicio</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../vistaPrincipal">Volver</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Otras opciones</a>
-            </li>
-          </ul>
+    <nav class="navbar navbar-expand-lg" style="background-color: #3E5902;">
+      <img src="https://cdn-icons-png.flaticon.com/512/706/706164.png" alt=".login_icon2" class="login_icon2" />
+            <a class="navbar-brand" href="#" style="color: white;">SaludablementeDelicioso</a>
+        <div class="container">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" 
+                aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-link" href="../vistaPrincipal" style="color: white;">Inicio</a>
+                    <a class="nav-link" href="" style="color: white;"> Otras opciones</a>
+                </div>
+            </div>
         </div>
-      </div>
     </nav>
-  </header>
+</header>
 
   <div class="container">
-    <h1>Carrito de Compras</h1>
+    <br>
+    <h1><span class="icono"><i class="bi bi-cart4"></i></span> Carrito de compras</h1>
+
+    <br>
     {% for producto in carrito %}
     <div class="cart-item">
       <div class="row">
@@ -81,37 +104,46 @@
         <div class="col-md-7">
           <h4 class="cart-item-title">{{producto.nombre}}</h4>
           <p class="cart-item-price">{{producto.precio}}</p>
-        </div> 
+        </div>
         <div class="col-md-3">
           <form method="post" action="{% url 'actualizar_cantidad' pk=producto.id %}">
             {% csrf_token %}
             <input type="number" class="form-control" value=1  name="cantidad" onchange="this.form.submit()">
           </form>
         </div>
-        </div>
-        <form method="post" action="{% url 'eliminar_producto' pk=producto.id %}">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
       </div>
-      {% endfor %}
+      <form method="post" action="{% url 'eliminar_producto' pk=producto.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+      </form>
     </div>
-      </div>
-    </div>
-   
-    
-    <p>Total: ${{ total }}</p>
-    <button class="btn btn-primary mt-3"><a href="../factura">Proceder al Pago</a</button>
-    <p></p>
-    <form method="post" action="{% url 'limpiar_carrito' %}">
-      {% csrf_token %}
-      <button type="submit" class="btn btn-danger">Limpiar Carrito</button>
-    </form>
+    {% endfor %}
   </div>
 
-  <!-- Agrega los enlaces a los archivos de Bootstrap y jQuery -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+  <div class="cuadro">
+    <p>Total: ${{ total }}</p>
+  </div>
+  <br>
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center mb-3">
+      <form method="post" action="{% url 'limpiar_carrito' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Limpiar Carrito</button>
+      </form>
+    </div>
+    <div class="col-md-6 text-center">
+      <button class="btn btn-primary"><a href="../factura">Proceder al Pago</a></button>
+    </div>
+  </div>
+  
+</div>
+  
+
+<!-- Agrega los enlaces a los archivos de Bootstrap y jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

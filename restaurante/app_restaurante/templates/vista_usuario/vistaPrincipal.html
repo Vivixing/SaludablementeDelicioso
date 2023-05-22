@@ -139,6 +139,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
+                    <!--  Agregar barra de búsqueda -->
+                    <form class="form-inline my-2 my-lg-0" method="GET" action="">
+                        <input class="form-control mr-sm-2" type="search" name="q" placeholder="Buscar" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                    </form>
                     <a class="nav-item nav-link" href="../vista_usuario/mostrar_carrito" style="color: white;">Carrito</a>
                     <a class="nav-item nav-link" href="../admin"style="color: white;">Administrador</a>
                    {% if request.user.is_authenticated %}
@@ -146,8 +151,6 @@
             {% else %}
             <a class="nav-item nav-link" href="../usuario/login" style="color: white;">Iniciar Sesión</a>
             <a class="nav-item nav-link" href="../usuario/crear" style="color: white;">Registrarse</a>
-
-
                 </div>
             </div>
         </div>
@@ -167,9 +170,31 @@
           </div>
         {% endif %}
       </div>
-      
-    <h2 class="text-center mb-4" style="color: white; font-size: 40px;">Menú</h2>
   
+    {% if resultados %}
+    <h2 class="text-center mb-4" style="color: white; font-size: 40px;">Resultados de la Búsqueda</h2>
+
+<div class="row">
+    {% for producto in resultados %}
+    <div class="col-md-4">
+      <div class="card">
+        <img src="{{ producto.img.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ producto.nombre }}</h5>
+          <p class="card-text">{{ producto.descripcion }}</p>
+          <p class="card-text">{{ producto.precio }}</p>
+          <a href="../vista_usuario/agregar_producto/{{producto.id}}" class="btn btn-primary">Agregar al carrito</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No hay elementos en el menú que coincidan con su búsqueda.</p>
+    {% endfor %}
+  </div>
+  
+
+{% else %}
+<h2 class="text-center mb-4" style="color: white; font-size: 40px;">Menú</h2>
 
     <div class="row">
       <div class="col-md-4 mb-4">
@@ -313,6 +338,7 @@
         </footer>
     
     </div>
+    {% endif %}
     </body>
     {# JS y jQuery Bootstrap #}
     {% bootstrap_javascript jquery='full' %}   

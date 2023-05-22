@@ -18,12 +18,16 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos, factura
+from  app_restaurante.views import ComidaListado, InformacionVentaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos, factura
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
 from django.views.generic import RedirectView
 from django.views.static import serve
+
+
+
+
 
 
 
@@ -98,6 +102,7 @@ urlpatterns = [
 
     path('pedido/eliminar/<int:pk>', PedidoEliminar.as_view(template_name= "pedido/eliminar.html"), name='eliminarPedido'),
     
+    path('administrador/informacionVenta/', InformacionVentaListado.as_view(template_name = "admin/informacionVenta.html"), name='informacionVenta'),
     
 
 ]

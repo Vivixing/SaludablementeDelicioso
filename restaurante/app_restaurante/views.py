@@ -1,6 +1,7 @@
 import datetime
 import random
 from aiohttp import request
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -213,10 +214,28 @@ class PedidoEliminar(SuccessMessageMixin, DeleteView):
     
 class Index(ListView):
     model = Comida_menu
-    
+
+class InformacionVentaListado(ListView):
+    model = InformacionVenta
+    context_object_name = 'informacionVentas'
+
+    def get_queryset(self):
+        return InformacionVenta.objects.all().order_by('-cantidad')
+
 
 class VistaPrincipalView(TemplateView):
     template_name = 'vista_usuario/vistaPrincipal.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query = self.request.GET.get('q')
+        if query:
+            # Realizar búsqueda y pasar los resultados a la plantilla
+            productos = Comida_menu.objects.filter(nombre__icontains=query)
+            context['resultados'] = productos
+        return context
+
 
 def vista_vegetariano(request):
     items = Comida_menu.objects.filter(categoria='1')
@@ -460,3 +479,4 @@ def factura(request):
             informacionVenta = InformacionVenta(id_comida=pedido.id_comida, cantidad=pedido.cantidad, fecha=fecha, totalVenta= pedido.id_comida.precio * pedido.cantidad)
             informacionVenta.save()
     return render(request, 'vista_usuario/factura.html', { 'zipped_data': zipped_data, 'comida_menu': comida_menu, 'fecha': fecha, 'usuario': usuario, 'total': total, 'descuento': resta, 'subtotal': subtotal, 'fac_id': fac_id})
+

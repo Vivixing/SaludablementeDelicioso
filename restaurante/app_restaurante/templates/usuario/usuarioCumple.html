@@ -57,7 +57,7 @@
             <div class="list-group">
                 <br>
                 <a href="#" class="list-group-item active">Opciones de administración</a>
-                <a href="crear" type="button" class="list-group-item"></i> Crear pedido</a>
+                <a href="crear" type="button" class="list-group-item"></i> Crear usuario</a>
                  <!-- <a href="detalles" class="list-group-item">detalles del plato</a>
                 <a href="eliminar" class="list-group-item">Eliminar plato</a>
                 <a href="actualizar" class="list-group-item">Actualizar plato</a>-->
@@ -70,45 +70,44 @@
         </div>
         <div class="col-md-9">
             <br>
-            <h1 class="mb-4">Listado de pedidos</h1>
+            <h1 class="mb-4">Usuarios Por Cumpleaños</h1>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
-                    <th>Comida</th>
-                    <th>Usuario</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Correo</th>
+                    <th>Teléfono</th>
                     <th>Dirección</th>
-                    <th>Factura ID</th>
-                    <th>Fecha</th>
-                    <th>Cantidad</th>
-                    <th>Total Factura</th>
+                    <th>Fecha de nacimiento</th>
                     <th>Acciones</th>
+
                     
                 </tr>
             </thead>
             <tbody>
-                {% for delivery in object_list %}
+                {% for usuario in object_list %}
                 <tr>
-                    <td>{{ delivery.id_comida}}</td>
-                    <td>{{delivery.id_usuario}}</td>
-                    <td>{{delivery.direccion}}</td>
-                    <td>{{delivery.id_factura}}</td>
-                    <td>{{delivery.fecha}}</td>
-                    <td>{{delivery.cantidad}}</td>
-                    <td>{{delivery.totalFactura}}</td>
-                
-        
-                
-                    <td>
-                        <form method="POST" action="eliminar/{{delivery.id}}" class="d-inline-block">
-                            {% csrf_token %}
+                    <td>{{usuario.usuario.first_name}}</td>
+                    <td>{{usuario.usuario.last_name}}</td>
+                    <td>{{usuario.usuario.email}}</td>
+                    <td>{{usuario.telefono}}</td>
+                    <td>{{usuario.direccion}}</td>
+                    <td>{{usuario.nacimiento}}</td>
+                    
 
+                    <td>
+                        <form method="POST" action="eliminar/{{usuario.id}}" class="d-inline-block">
+                            {% csrf_token %}
+                      
+                        
                         <div class="btn-group">
-                            <a href="detalle/{{delivery.id}}" class="btn btn-primary btn-sm" title="Ver"><i class="fas fa-eye"></i>Detalle</a>
-                            <a href="actualizar/{{delivery.id}}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i>Editar</a>
+                            <a href="detalle/{{usuario.id}}" class="btn btn-primary btn-sm" title="Ver"><i class="fas fa-eye"></i>Detalle</a>
+                            <a href="actualizar/{{usuario.id}}" class="btn btn-warning btn-sm" title="Editar"><i class="fas fa-edit"></i>Editar</a>
                             <button class="btn btn-danger" onclick="return eliminar();" type="submit">
                                 Eliminar
                               </button>
-                               
+                
                         </div>
                     </form>
                     </td>
@@ -119,7 +118,7 @@
             </tbody>
         </table>
 
-         {# JS y jQuery Bootstrap #}
+        {# JS y jQuery Bootstrap #}
   {% bootstrap_javascript jquery='full' %} 
 
 
@@ -130,4 +129,3 @@
 </div>
 
     
-

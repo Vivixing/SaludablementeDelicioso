@@ -61,7 +61,7 @@
                  <!-- <a href="detalles" class="list-group-item">detalles del plato</a>
                 <a href="eliminar" class="list-group-item">Eliminar plato</a>
                 <a href="actualizar" class="list-group-item">Actualizar plato</a>-->
-                <a href="#" class="list-group-item">Agregar reserva</a>
+                <a href="../usuario/cumple" class="list-group-item">Ordenar por Cumpleaños</a>
                 <a href="#" class="list-group-item">Editar reserva</a>
                 <a href="#" class="list-group-item">Eliminar reserva</a>
                 <a href="#" class="list-group-item">Ver pedidos</a>
@@ -88,9 +88,9 @@
             <tbody>
                 {% for usuario in object_list %}
                 <tr>
-                    <td>{{usuario.nombre}}</td>
-                    <td>{{usuario.apellido}}</td>
-                    <td>{{usuario.email}}</td>
+                    <td>{{usuario.usuario.first_name}}</td>
+                    <td>{{usuario.usuario.last_name}}</td>
+                    <td>{{usuario.usuario.email}}</td>
                     <td>{{usuario.telefono}}</td>
                     <td>{{usuario.direccion}}</td>
                     <td>{{usuario.nacimiento}}</td>

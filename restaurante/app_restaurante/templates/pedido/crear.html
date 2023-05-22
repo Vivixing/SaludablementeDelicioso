@@ -28,7 +28,7 @@
  <head>
     <body>
     <div class="container" style="padding: 30px; border-radius: 10px;">
-        <h1 class="text-center mb-4">Realizar Pedido</h1>
+        <h1 class="text-center mb-4">Crear Delivery</h1>
 
         <form method="post" enctype="multipart/form-data">
 
@@ -37,12 +37,12 @@
             
             <!-- Formulario para pedido -->
             <div>
-                <label for="id" class="txt_negrita">ID:</label>
-                {{ form.id|add_class:"form-control" }}
-            </div>
-            <div>
                 <label for="id_usuario" class="txt_negrita">Usuario:</label>
                 {{ form.id_usuario|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="direccion" class="txt_negrita">Direeción:</label>
+                {{ form.direccion|add_class:"form-control" }}
             </div>
             <div>
                 <label for="id_comida" class="txt_negrita">Comida:</label>
@@ -51,6 +51,22 @@
             <div>
                 <label for="cantidad" class="txt_negrita">Cantidad:</label>
                 {{ form.cantidad|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="id_factura" class="txt_negrita">ID Factura:</label>
+                {{ form.id_factura|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="totalFactura" class="txt_negrita">Total Factura:</label>
+                {{ form.totalFactura|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="fecha" class="txt_negrita">Fecha:</label>
+                {{ form.fecha|add_class:"form-control" |attr:'type:date'}}
+            </div>
+            <div>
+                <label for="hora" class="txt_negrita">Hora:</label>
+                {{ form.hora|add_class:"form-control" |attr:'type:time'}}
             </div>
             <p>
             <div class="d-flex justify-content-center">

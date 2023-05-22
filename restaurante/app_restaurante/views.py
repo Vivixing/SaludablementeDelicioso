@@ -1,16 +1,19 @@
 import datetime
 import random
 from aiohttp import request
+from django.conf import settings
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from datetime import date, timedelta
+
+from django.views import View
 from .forms import LoginForm, UsuarioForm
 from itertools import zip_longest
 
 # Create your views here.
-from .models import Comida_menu, InformacionVenta, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
+from .models import Comida_menu, InformacionVenta, Delivery, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 #Instanciamos las vistas genéricas de Django 
@@ -61,6 +64,9 @@ class CategoriaActualizar(SuccessMessageMixin, UpdateView):
     # Redireccionamos a la página principal luego de actualizar un registro o arepa
     def get_success_url(self):               
         return reverse('leer_categoria') # Redireccionamos a la vista principal 'leer'
+
+class CategoriaDetalle(DetailView):
+    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
 
 class CategoriaEliminar(SuccessMessageMixin, DeleteView):
     model = Categoria
@@ -117,7 +123,20 @@ class ComidaEliminar(SuccessMessageMixin, DeleteView):
         return reverse('leer') # Redireccionamos a la vista principal 'leer'
     
 class UsuarioListado(ListView):
+    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'  # Ordenar por el campo fecha_nacimiento
+    
+class UsuarioListadoCumple(ListView):
     model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    ordering = 'nacimiento'  # Ordenar por el campo fecha_nacimiento
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        today = date.today()
+        queryset = queryset.order_by(
+            'nacimiento__month',
+            'nacimiento__day'
+        )
+        return queryset
 
 #Crear
 class UsuarioCrear(SuccessMessageMixin, CreateView):
@@ -171,12 +190,12 @@ class UsuarioEliminar(SuccessMessageMixin, DeleteView):
         return reverse('leer_usuario') # Redireccionamos a la vista principal 'leer'
 
 class PedidoListado(ListView):
-    model = Pedidos # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
 
 #Crear
 class PedidoCrear(SuccessMessageMixin, CreateView):
-    model = Pedidos # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Pedidos # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    form = Delivery # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
     fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
     success_message = 'Pedido Creado Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
 
@@ -187,12 +206,12 @@ class PedidoCrear(SuccessMessageMixin, CreateView):
 
 #Leer, mostrar los detalles de la comida
 class PedidoDetalle(DetailView):
-    model = Pedidos # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
 
 #Actualizar por formulario
 class PedidoActualizar(SuccessMessageMixin, UpdateView):
-    model = Pedidos # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Pedidos # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    form = Delivery # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
     fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
     success_message = 'Pedido Actualizado Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa
 
@@ -202,8 +221,8 @@ class PedidoActualizar(SuccessMessageMixin, UpdateView):
 
 #Eliminar
 class PedidoEliminar(SuccessMessageMixin, DeleteView):
-    model = Pedidos
-    form = Pedidos
+    model = Delivery
+    form = Delivery
     fields = "__all__"
 
     # Redireccionamos a la página principal luego de eliminar un registro o arepa
@@ -211,9 +230,16 @@ class PedidoEliminar(SuccessMessageMixin, DeleteView):
         success_message = 'Pedido Eliminado Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa
         messages.success (self.request, (success_message))
         return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'
-    
-class Index(ListView):
-    model = Comida_menu
+
+
+class Index(View):
+    template_name = 'admin/indexAdmi.html'
+    #Verificamos si el usuario es administrador
+    def get(self, request, *args, **kwargs):
+        if request.user.is_superuser:
+            return render(request, self.template_name)
+        else:
+            return redirect('vista_principal')
 
 class InformacionVentaListado(ListView):
     model = InformacionVenta
@@ -267,33 +293,6 @@ def vista_postres(request):
     print(items)
     return render(request, 'vista_usuario/vistaPostre.html', context)
 
-def login_view(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        contraseña = request.POST.get('contraseña')
-    
-        # Retrieve the user object based on the provided email
-        try:
-            user = Usuarios.objects.get(email=email)
-        except Usuarios.DoesNotExist:
-            user = None
-
-        if user is not None and user.check_password(contraseña):
-            # Authenticate the user
-            authenticated_user = authenticate(request, username=user.email, password=contraseña)
-
-            if authenticated_user is not None:
-                # Login the authenticated user
-                login(request, authenticated_user)
-                
-                # Redirect to the main view
-                return redirect('./vista_usuario/vista_principal')
-            else:
-                messages.error(request, 'Failed to authenticate user.')
-        else:
-            messages.error(request, 'Incorrect email or password.')
-
-    return render(request, 'usuario/login.html')
 
 def logout_view(request):
     logout(request)
@@ -401,7 +400,7 @@ def limpiar_carrito(request):
 
 class Login_view(LoginView):
     template_name = 'usuario/login.html'
-
+    
 def logout_view(request):
     logout(request)
     return redirect('login')
@@ -413,6 +412,10 @@ def factura(request):
     request.session['carrito'] = []
 
     descuento = 0
+    descuentoCategoria = 0
+    descuentoProducto = 0
+    descuentoCumple = 0
+
     usuario = Usuarios.objects.get(usuario=request.user)
     pedidos = Pedidos.objects.filter(id_usuario=usuario, fecha=datetime.date.today())
     comidas_ids = pedidos.values_list('id_comida', flat=True)
@@ -475,6 +478,9 @@ def factura(request):
     #Agregamos la información de la venta a la base de datos de ventas
     for pedido in pedidos:
         #Verificamos si el producto ya se encuentra en la base de datos de ventas
+        delivery = Delivery(id_usuario=usuario,id_comida=pedido.id_comida, cantidad=pedido.cantidad, fecha=fecha, totalFactura=total, direccion=usuario.direccion, id_factura=fac_id, hora=datetime.datetime.now())
+        delivery.save()
+
         if InformacionVenta.objects.filter(id_comida=pedido.id_comida).exists():
             #Si el producto ya se encuentra en la base de datos, se actualiza la cantidad y el total
             informacionVenta = InformacionVenta.objects.get(id_comida=pedido.id_comida)

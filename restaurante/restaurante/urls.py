@@ -18,7 +18,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 #from django.urls import include
-from  app_restaurante.views import ComidaListado, InformacionVentaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos, factura
+from  app_restaurante.views import CategoriaListado, UsuarioListadoCumple, CategoriaDetalle, CategoriaActualizar, CategoriaCrear, CategoriaEliminar, ComidaListado, InformacionVentaListado, eliminar_producto, limpiar_carrito, actualizar_cantidad,agregar_producto, mostrar_carrito,  vista_vegetariano, logout_view, LoginView, Index, ComidaDetalle,ComidaCrear,ComidaActualizar,ComidaEliminar, UsuarioActualizar, UsuarioCrear, UsuarioDetalle, UsuarioEliminar, UsuarioListado, PedidoActualizar, PedidoCrear, PedidoDetalle, PedidoEliminar, PedidoListado, VistaPrincipalView, vista_bebidas, vista_diabeticos, vista_postres, vista_veganos, factura
 #from .views import principal
 #from .views import principal
 #from app_restaurante.views import principal
@@ -59,11 +59,11 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     
-    path('principal/', Index.as_view(template_name = "index.html"), name='principal'),
+    path('principalAdmi/', Index.as_view(), name='principalAdmi'),
 
-    path('categoria/', Index.as_view(template_name = "categoria/categoria.html"), name='categoria'),
-    path('categoria/detalle/<int:pk>', Index.as_view(template_name = "categoria/detalles.html"), name='detallesCategoria'),
-    path('categoria/crear', Index.as_view(template_name = "categoria/crear.html"), name='crearCategoria'),
+    path('categoria/', CategoriaListado.as_view(template_name = "categoria/categoria.html"), name='categoria'),
+    path('categoria/detalle/<int:pk>', CategoriaDetalle.as_view(template_name = "categoria/detalles.html"), name='detallesCategoria'),
+    path('categoria/crear', CategoriaCrear.as_view(template_name = "categoria/crear.html"), name='crearCategoria'),
     
     
     # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
@@ -83,6 +83,8 @@ urlpatterns = [
     path('comida/eliminar/<int:pk>', ComidaEliminar.as_view(template_name= "comida/eliminar.html"), name='eliminar'),
 
     path('usuario/', UsuarioListado.as_view(template_name = "usuario/usuario.html"), name='leer_usuario'),
+
+    path('usuario/cumple', UsuarioListadoCumple.as_view(template_name = "usuario/usuarioCumple.html"), name='leer_usuarioCumple'),
 
     path('usuario/detalle/<int:pk>', UsuarioDetalle.as_view(template_name = "usuario/detalles.html"), name='detallesUsuario'),
 

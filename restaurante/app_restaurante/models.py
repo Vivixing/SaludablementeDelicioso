@@ -108,7 +108,21 @@ class InformacionVenta(models.Model):
 
     def __str__(self):
         return str(self.id_comida) + ' ' + str(self.cantidad) + ' ' + str(self.totalVenta) + ' ' + str(self.fecha) + ' '
+
+class Delivery(models.Model):
+    id_usuario = models.ForeignKey(Usuarios, to_field='id', db_column='id_usuario', on_delete=models.CASCADE)
+    id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    totalFactura = models.PositiveIntegerField()
+    direccion = models.CharField(max_length=100)
+    fecha = models.DateField(max_length=100)
+    hora = models.TimeField(max_length=100)
+    id_factura = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
     
+    def __str__(self):
+        return str(self.id_usuario) + ' ' + str(self.id_comida) + ' ' + str(self.cantidad) + ' ' + str(self.total) + ' ' + str(self.direccion) + ' ' + str(self.fecha) + ' ' + str(self.hora) + ' ' + str(self.estado) + ' '
 class Meta:
     db_table = 'comida'
     db_table = 'usuarios'

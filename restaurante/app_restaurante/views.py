@@ -432,17 +432,23 @@ def factura(request):
     if cumple:
         descuentoCumple= DescuentoCumple.objects.get(id_usuario=usuario, fecha_inicio=fecha)
         descuentoCumple = descuentoCumple.descuento
+    else:
+        descuentoCumple = 0
     #Verificamos si hay descuento por categoría o por producto
     for pedido in pedidos:
         descuentoCategoria = DescuentoCategoria.objects.filter(id_categoria=pedido.id_comida.categoria).exists()
         if descuentoCategoria:
             descuentoCategoria = DescuentoCategoria.objects.get(id_categoria=pedido.id_comida.categoria)
             descuentoCategoria = descuentoCategoria.descuento
-    
+        else:
+            descuentoCategoria = 0
+
         descuentoProducto = DescuentoProducto.objects.filter(id_comida=pedido.id_comida).exists()
         if descuentoProducto:
             descuentoProducto = DescuentoProducto.objects.get(id_comida=pedido.id_comida)
             descuentoProducto = descuentoProducto.descuento
+        else:
+            descuentoProducto = 0
     #Se aplica el descuento que sea mayor
     if descuentoCumple > descuentoCategoria and descuentoCumple > descuentoProducto:
         descuento = descuentoCumple

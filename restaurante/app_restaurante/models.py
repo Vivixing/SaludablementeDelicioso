@@ -56,7 +56,7 @@ class Pedidos(models.Model):
     id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField()
     fecha = models.DateField(max_length=100, auto_now_add=True)
-    total = models.DecimalField(max_digits=8, decimal_places=3, editable=False)
+    total = models.PositiveIntegerField()
 
     def save(self, *args, **kwargs):
         self.total = self.id_comida.precio * self.cantidad
@@ -66,7 +66,6 @@ class Pedidos(models.Model):
         return str(self.id_usuario) + ' ' + str(self.id_comida) + ' ' + str(self.cantidad) + ' ' + str(self.fecha) + ' ' + str(self.total) + ' '
 
 class DescuentoProducto(models.Model):
-    id = models.IntegerField(primary_key=True)
     id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
     descuento = models.FloatField()
     fecha_inicio = models.DateField(max_length=100)
@@ -78,7 +77,6 @@ class DescuentoProducto(models.Model):
         return str(self.id_comida) + ' ' + str(self.descuento) + ' ' + str(self.fecha_inicio) + ' ' + str(self.fecha_fin) + ' '
 
 class DescuentoCumple(models.Model):
-    id = models.IntegerField(primary_key=True)
     id_usuario = models.ForeignKey(Usuarios, to_field='id', db_column='id_usuario', on_delete=models.CASCADE)
     descuento = models.FloatField()
     fecha_inicio = models.DateField(max_length=100)
@@ -90,7 +88,6 @@ class DescuentoCumple(models.Model):
         return str(self.id_usuario) + ' ' + str(self.descuento) + ' ' + str(self.fecha_inicio) + ' ' + str(self.fecha_fin) + ' '
 
 class DescuentoCategoria(models.Model):
-    id = models.IntegerField(primary_key=True)
     id_categoria = models.ForeignKey(Categoria, to_field='id', db_column='id_categoria', on_delete=models.CASCADE)
     descuento = models.FloatField()
     fecha_inicio = models.DateField(max_length=100)
@@ -99,7 +96,19 @@ class DescuentoCategoria(models.Model):
     updated_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.id_usuario) + ' ' + str(self.descuento) + ' ' + str(self.fecha_inicio) + ' ' + str(self.fecha_fin) + ' '
+        return str(self.id_categoria) + ' ' + str(self.descuento) + ' ' + str(self.fecha_inicio) + ' ' + str(self.fecha_fin) + ' '
+
+class InformacionVenta(models.Model):
+    id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
+    cantidad = models.PositiveIntegerField()
+    totalVenta = models.PositiveIntegerField()
+    fecha = models.DateField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.id_comida) + ' ' + str(self.cantidad) + ' ' + str(self.totalVenta) + ' ' + str(self.fecha) + ' '
+    
 class Meta:
     db_table = 'comida'
     db_table = 'usuarios'

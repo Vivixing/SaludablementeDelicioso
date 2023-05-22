@@ -95,7 +95,7 @@
     <h1><span class="icono"><i class="bi bi-cart4"></i></span> Carrito de compras</h1>
 
     <br>
-    {% for producto in carrito %}
+    {% for producto, cantidad in zipped_data %}
     <div class="cart-item">
       <div class="row">
         <div class="col-md-2">
@@ -108,7 +108,7 @@
         <div class="col-md-3">
           <form method="post" action="{% url 'actualizar_cantidad' pk=producto.id %}">
             {% csrf_token %}
-            <input type="number" class="form-control" value=1  name="cantidad" onchange="this.form.submit()">
+            <input type="number" class="form-control" value={{cantidad}}  name="cantidad" onchange="this.form.submit()">
           </form>
         </div>
       </div>
@@ -134,7 +134,9 @@
       </form>
     </div>
     <div class="col-md-6 text-center">
-      <button class="btn btn-primary"><a href="../factura">Proceder al Pago</a></button>
+      <form method="post" action="{% url 'limpiar_carrito' %}">
+        {% csrf_token %}
+      <button class="btn btn-primary" type="submit"><a href="../factura">Proceder al Pago</a></button>
     </div>
   </div>
   

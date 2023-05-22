@@ -44,7 +44,7 @@
           </div>
           <div class="col-md-6">
             <h5>Detalles de la factura:</h5>
-            <p>Número de factura: {{fact_id}}</p>
+            <p>Número de factura: {{fac_id}}</p>
             <p>Fecha de emisión: {{fecha}}</p>
           </div>
         </div>
@@ -72,6 +72,10 @@
           </tbody>
           <tfoot>
             <tr>
+              <th colspan="3" class="text-right">Subtotal:</th>
+              <th>{{subtotal}}</th>
+              <th colspan="3" class="text-right">Descuento:</th>
+              <th>{{descuento}}</th>
               <th colspan="3" class="text-right">Total:</th>
               <th>{{total}}</th>
             </tr>

@@ -4,12 +4,12 @@ from aiohttp import request
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
-from datetime import date
+from datetime import date, timedelta
 from .forms import LoginForm, UsuarioForm
 from itertools import zip_longest
 
 # Create your views here.
-from .models import Comida_menu, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
+from .models import Comida_menu, InformacionVenta, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect
 #Instanciamos las vistas genéricas de Django 
@@ -132,6 +132,14 @@ class UsuarioCrear(SuccessMessageMixin, CreateView):
             nacimiento = form.cleaned_data.get('nacimiento')
             usuarioBD = Usuarios(telefono=telefono, direccion=direccion, nacimiento=nacimiento, usuario=usuario)
             usuarioBD.save()
+
+            #Inmediatamente despues de crear el usuario, se creará su descuento de cumpleaños
+            fecha_inicio = date(date.today().year, nacimiento.month, nacimiento.day)
+            fecha_fin = fecha_inicio + timedelta(days=1)
+
+            descuentoCumple = DescuentoCumple(id_usuario=usuarioBD, descuento=0.15, fecha_inicio=fecha_inicio, fecha_fin=fecha_fin)
+            descuentoCumple.save()
+
             login(self.request, usuario)
             return redirect('vista_principal')
     #Leer, mostrar los detalles de la comida
@@ -296,39 +304,60 @@ def agregar_producto(request, pk):
     
     return redirect('mostrar_carrito')
 
+@login_required
 def mostrar_carrito(request):
     carrito_ids = request.session.get('carrito', [])
     carrito = Comida_menu.objects.filter(id__in=carrito_ids)
     total = sum((producto.precio * carrito_ids.count(producto.id) for producto in carrito))
-    #Creamos una lista con las cantidades de cada producto
-    return render(request, 'vista_usuario/carritoCompra.html', {'carrito': carrito, 'total': total})
+    #Creamos una lista para guardar la cantidad de que cada producto se encuentra en el carrito
+    cantidad = []
+    for producto in carrito:
+        cantidad.append(carrito_ids.count(producto.id))
+    #Relacionamos cada producto con su cantidad
+    zipped_data = zip_longest(carrito, cantidad)
+    return render(request, 'vista_usuario/carritoCompra.html', {'carrito': carrito, 'total': total, 'zipped_data': zipped_data})
 
 def actualizar_cantidad(request, pk):
+
     carrito = request.session.get('carrito', [])
     cantidad_actualizada = request.POST.get('cantidad')
     cantidad_actualizada = int(cantidad_actualizada)
     Usuario= Usuarios.objects.get(usuario=request.user)
-    if cantidad_actualizada>=1:
-        carrito.append(pk)# Agregar solo el ID del producto al carrito
-    if cantidad_actualizada < 1:
-        carrito.remove(pk)
-        
-    # Obtener el pedido asociado al producto y al usuario actual
-    pedido = Pedidos.objects.get(id_comida=pk, id_usuario=Usuario, fecha=datetime.date.today())
-    pedido.cantidad = cantidad_actualizada
-    pedido.save()
+    #Verificamos que la cantidad que ingresa el usuario no supere el stock del producto
+    producto = Comida_menu.objects.get(pk=pk)
 
-    request.session['carrito'] = carrito
+    if int(cantidad_actualizada) > int(producto.stock):
+        messages.error(request, 'La cantidad ingresada supera el stock del producto')
+
+    
+    else:
+        # Obtener el pedido asociado al producto y al usuario actual
+        pedido = Pedidos.objects.get(id_comida=pk, id_usuario=Usuario, fecha=datetime.date.today())
+        pedido.cantidad = cantidad_actualizada
+        pedido.save()
+        diferencia = carrito.count(pk) - pedido.cantidad
+        if diferencia < 0:
+            for i in range(abs(diferencia)):
+                carrito.append(pk)
+        elif diferencia > 0:
+            for i in range(abs(diferencia)):
+                carrito.remove(pk)
+        producto.save()
+        request.session['carrito'] = carrito
     return redirect('mostrar_carrito')
 
 def eliminar_producto(request, pk):
     carrito = request.session.get('carrito', [])
-    #Recorremos el carrito y eliminamos todos los productos con el id que le pasamos
-    for i in carrito:
-        if i == pk:
-            carrito.remove(i)
-            
-    request.session['carrito'] = carrito
+    # Creamos una lista auxiliar para almacenar los productos que no se eliminarán
+    carrito_actualizado = []
+    
+    # Recorremos el carrito y agregamos los productos que no coinciden con el ID a eliminar
+    for producto_id in carrito:
+        if producto_id != pk:
+            carrito_actualizado.append(producto_id)
+    
+    # Actualizamos el carrito en la sesión con la lista actualizada
+    request.session['carrito'] = carrito_actualizado
     
     # Obtener el usuario actual
     usuario = Usuarios.objects.get(usuario=request.user)
@@ -337,6 +366,7 @@ def eliminar_producto(request, pk):
     Pedidos.objects.filter(id_comida=pk, id_usuario=usuario).delete()
     
     return redirect('mostrar_carrito')
+
 
 def limpiar_carrito(request):
     carrito = request.session.get('carrito', [])
@@ -357,7 +387,13 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def factura(request):
+    #Limpiamos el carrito
+    carrito = request.session.get('carrito', [])
+    request.session['carrito'] = []
+
+    descuento = 0
     usuario = Usuarios.objects.get(usuario=request.user)
     pedidos = Pedidos.objects.filter(id_usuario=usuario, fecha=datetime.date.today())
     comidas_ids = pedidos.values_list('id_comida', flat=True)
@@ -366,12 +402,61 @@ def factura(request):
     precios_calculados = []
     for pedido in pedidos:
         precio_total = pedido.id_comida.precio * pedido.cantidad
+        pedido.id_comida.stock = int(pedido.id_comida.stock) - pedido.cantidad
+        pedido.id_comida.save()
         precios_calculados.append(precio_total)
 
+    #Obtenemos la fecha actual
     fecha = datetime.date.today()
-    total = sum(precios_calculados, 0)
+    #Verificamos si el usuario cumple años ese día para aplicarle el descuento
+    cumple = DescuentoCumple.objects.filter(id_usuario=usuario, fecha_inicio=fecha).exists()
+    if cumple:
+        descuentoCumple= DescuentoCumple.objects.get(id_usuario=usuario, fecha_inicio=fecha)
+        descuentoCumple = descuentoCumple.descuento
+    #Verificamos si hay descuento por categoría o por producto
+    for pedido in pedidos:
+        descuentoCategoria = DescuentoCategoria.objects.filter(id_categoria=pedido.id_comida.categoria).exists()
+        if descuentoCategoria:
+            descuentoCategoria = DescuentoCategoria.objects.get(id_categoria=pedido.id_comida.categoria)
+            descuentoCategoria = descuentoCategoria.descuento
+    
+        descuentoProducto = DescuentoProducto.objects.filter(id_comida=pedido.id_comida).exists()
+        if descuentoProducto:
+            descuentoProducto = DescuentoProducto.objects.get(id_comida=pedido.id_comida)
+            descuentoProducto = descuentoProducto.descuento
+    #Se aplica el descuento que sea mayor
+    if descuentoCumple > descuentoCategoria and descuentoCumple > descuentoProducto:
+        descuento = descuentoCumple
+    
+    elif descuentoCategoria > descuentoCumple and descuentoCategoria > descuentoProducto:
+        descuento = descuentoCategoria
+    
+    elif descuentoProducto > descuentoCumple and descuentoProducto > descuentoCategoria:
+        descuento = descuentoProducto
 
+    subtotal = sum(precios_calculados, 0)
+    resta = sum(precios_calculados, 0)*descuento
+    total = sum(precios_calculados, 0) - resta
+    resta= int(resta)
+    total = int(total)
+    fac_id = random.randint(1, 1000000)
     # Zip the pedidos and precios_calculados lists
     zipped_data = zip_longest(pedidos, precios_calculados)
 
-    return render(request, 'vista_usuario/factura.html', {'zipped_data': zipped_data, 'comida_menu': comida_menu, 'fecha': fecha, 'usuario': usuario, 'total': total, })
+    # Eliminar los elementos de pedido asociados a los productos en el carrito y al usuario actual
+    Pedidos.objects.filter(id_usuario=usuario, fecha= datetime.date.today()).delete()
+    
+
+    #Agregamos la información de la venta a la base de datos de ventas
+    for pedido in pedidos:
+        #Verificamos si el producto ya se encuentra en la base de datos de ventas
+        if InformacionVenta.objects.filter(id_comida=pedido.id_comida).exists():
+            #Si el producto ya se encuentra en la base de datos, se actualiza la cantidad y el total
+            informacionVenta = InformacionVenta.objects.get(id_comida=pedido.id_comida)
+            informacionVenta.cantidad = informacionVenta.cantidad + pedido.cantidad
+            informacionVenta.totalVenta = informacionVenta.totalVenta + pedido.id_comida.precio * pedido.cantidad
+            informacionVenta.save()
+        else:
+            informacionVenta = InformacionVenta(id_comida=pedido.id_comida, cantidad=pedido.cantidad, fecha=fecha, totalVenta= pedido.id_comida.precio * pedido.cantidad)
+            informacionVenta.save()
+    return render(request, 'vista_usuario/factura.html', { 'zipped_data': zipped_data, 'comida_menu': comida_menu, 'fecha': fecha, 'usuario': usuario, 'total': total, 'descuento': resta, 'subtotal': subtotal, 'fac_id': fac_id})

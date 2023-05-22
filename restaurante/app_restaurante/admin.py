@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comida_menu, Pedidos, Usuarios, Categoria
+from .models import Comida_menu, Pedidos, Usuarios, Categoria, DescuentoCumple, DescuentoCategoria, DescuentoProducto, InformacionVenta
 
 class AdminComida(admin.ModelAdmin):
     list_display = ('id', 'nombre', 'precio', 'descripcion', 'stock', 'categoria', 'img', 'created_at', 'updated_at')
@@ -22,3 +22,7 @@ admin.site.register(Comida_menu, AdminComida)
 admin.site.register(Pedidos, AdminPedidos)
 admin.site.register(Usuarios)
 admin.site.register(Categoria)
+admin.site.register(DescuentoCategoria)
+admin.site.register(DescuentoCumple)
+admin.site.register(DescuentoProducto)
+admin.site.register(InformacionVenta)

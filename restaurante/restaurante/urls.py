@@ -52,8 +52,6 @@ urlpatterns = [
     #path('vista_usuario/factura', VistaPrincipalView.as_view(template_name="vista_usuario/factura.html"), name='factura'),
     path('vista_usuario/factura/', factura, name='factura'),
     
-    
-    
     #urls para la vista del administrador 
     path('', RedirectView.as_view(url='vista_usuario/vistaPrincipal', permanent=False)),
 
@@ -68,6 +66,8 @@ urlpatterns = [
     
     # La ruta 'leer' en donde listamos todos los registros o arepas de la Base de Datos
     path('comida/', ComidaListado.as_view(template_name = "comida/comida.html"), name='leer'),
+    
+  
 
     # La ruta 'detalles' en donde mostraremos una página con los detalles de un arepas o registro 
     path('comida/detalle/<int:pk>', ComidaDetalle.as_view(template_name = "comida/detalles.html"), name='detalles'),
@@ -103,6 +103,8 @@ urlpatterns = [
     path('pedido/actualizar/<int:pk>', PedidoActualizar.as_view(template_name = "pedido/actualizar.html"), name='actualizarPedido'),
 
     path('pedido/eliminar/<int:pk>', PedidoEliminar.as_view(template_name= "pedido/eliminar.html"), name='eliminarPedido'),
+    
+    
     
     path('administrador/informacionVenta/', InformacionVentaListado.as_view(template_name = "admin/informacionVenta.html"), name='informacionVenta'),
     

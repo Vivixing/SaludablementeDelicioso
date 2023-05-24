@@ -26,6 +26,7 @@
     <link rel="icon"  type="image/png" href="https://cdn-icons-png.flaticon.com/512/706/706164.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
     <title>SaludablementeDelicioso</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -91,6 +92,9 @@
             clip-path: polygon(0 0, 0% 100%, 100% 50%);
           }
           
+           
+        
+          
         .header {
           background-color: #FFFFFF;
           padding: 20px;
@@ -137,13 +141,29 @@
                 aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
+
+            <!--  Agregar barra de búsqueda -->
+            <form class="form-inline my-2 my-lg-0 justify-content-center" method="GET" action="">
+              <div class="input-group">
+                <input class="form-control" type="search" name="q" placeholder="Buscar" aria-label="Search" style="width: 600px;">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-success btn-outline-light my-2 my-sm-0 w-100" type="submit">
+                    <i class="bi bi-search" style="color: white; font-size: 16.5px;"></i> 
+                  </button>
+                  
+                </div>
+              </div>
+            </form>
+            
+
+          
+          
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
-                    <!--  Agregar barra de búsqueda -->
-                    <form class="form-inline my-2 my-lg-0" method="GET" action="">
-                        <input class="form-control mr-sm-2" type="search" name="q" placeholder="Buscar" aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-                    </form>
+                    
+
+
                     <a class="nav-item nav-link" href="../vista_usuario/mostrar_carrito" style="color: white;">Carrito</a>
                     {% if user.is_authenticated and user.is_superuser %}
                       <a class="nav-item nav-link" href="../principalAdmi/" style="color: white;">Administrador</a>

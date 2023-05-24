@@ -29,6 +29,11 @@
       font-weight: bold;
       color: #267436; /* Verde fresco para los títulos */
     }
+    .smaller-button {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.875rem;
+    }
+    
     .cart-item-price {
       color: #888;
       margin-top: 5px;
@@ -83,7 +88,7 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav ml-auto">
                     <a class="nav-link" href="../vistaPrincipal" style="color: white;">Inicio</a>
-                    <a class="nav-link" href="" style="color: white;"> Otras opciones</a>
+                    <a class="nav-link" href="javascript:history.back();" style="color: white;"> Volver</a>
                 </div>
             </div>
         </div>
@@ -112,9 +117,10 @@
           </form>
         </div>
       </div>
+      <br>
       <form method="post" action="{% url 'eliminar_producto' pk=producto.id %}">
         {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <button type="submit" class="btn btn-danger ">Eliminar</button>
       </form>
     </div>
     {% endfor %}

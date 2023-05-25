@@ -11,7 +11,7 @@ from datetime import date, timedelta
 from django.views import View
 from .forms import LoginForm, UsuarioForm
 from itertools import zip_longest
-
+from django.contrib.auth.models import User
 # Create your views here.
 from .models import Comida_menu, InformacionVenta, Delivery, Usuarios, Pedidos, Categoria, DescuentoCategoria, DescuentoProducto, DescuentoCumple
 from django.contrib.auth import authenticate, login
@@ -43,37 +43,32 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 
 class CategoriaListado(ListView):
-    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Categoria 
 
-    def get(self, request, *args, **kwargs):
-        if request.user.is_superuser:
-            return render(request, self.template_name)
-        else:
-            return redirect('vista_principal')
         
 class CategoriaCrear(SuccessMessageMixin, CreateView):
-    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Categoria # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
-    success_message = 'Categoria Creada Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
+    model = Categoria 
+    form = Categoria 
+    fields = "__all__" 
+    success_message = 'Categoria Creada Correctamente!' 
         
-    # Redireccionamos a la página principal luego de crear un registro o arepa
+
     def get_success_url(self):        
         return reverse('leer_categoria')
 
 class CategoriaActualizar(SuccessMessageMixin, UpdateView):
-    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Categoria # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
-    success_message = 'Categoria Actualizada Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa 
+    model = Categoria 
+    form = Categoria 
+    fields = "__all__" 
+    success_message = 'Categoria Actualizada Correctamente!' 
 
         
-    # Redireccionamos a la página principal luego de actualizar un registro o arepa
+
     def get_success_url(self):               
-        return reverse('leer_categoria') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_categoria') 
 
 class CategoriaDetalle(DetailView):
-    model = Categoria # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Categoria 
 
         
 class CategoriaEliminar(SuccessMessageMixin, DeleteView):
@@ -81,42 +76,41 @@ class CategoriaEliminar(SuccessMessageMixin, DeleteView):
     form = Categoria
     fields = "__all__"     
         
-    # Redireccionamos a la página principal luego de eliminar un registro o arepa
+
     def get_success_url(self): 
-        success_message = 'Categoria Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
+        success_message = 'Categoria Eliminada Correctamente!'
         messages.success (self.request, (success_message))       
-        return reverse('leer_categoria') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_categoria') 
 
 class ComidaListado(ListView):
-    model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
+    model = Comida_menu 
     
 
     
 #Crear
 class ComidaCrear(SuccessMessageMixin, CreateView): 
-    model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Comida_menu# Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
-    success_message = 'Comida Creada Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
+    model = Comida_menu
+    form = Comida_menu
+    fields = "__all__" 
+    success_message = 'Comida Creada Correctamente!' 
 
         
-    # Redireccionamos a la página principal luego de crear un registro o arepa
+
     def get_success_url(self):        
         return reverse('leer') 
 
 #Leer, mostrar los detalles de la comida
 class ComidaDetalle(DetailView): 
-    model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
+    model = Comida_menu
 
 #Actualizar por formulario
 class ComidaActualizar(SuccessMessageMixin, UpdateView): 
-    model = Comida_menu # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py' 
-    form = Comida_menu # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa' 
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos 
-    success_message = 'Comida Actualizada Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa 
+    model = Comida_menu 
+    form = Comida_menu 
+    fields = "__all__" 
+    success_message = 'Comida Actualizada Correctamente!'
     
 
-    # Redireccionamos a la página principal luego de actualizar un registro o arepa
     def get_success_url(self):               
         return reverse('leer') # Redireccionamos a la vista principal 'leer'
     
@@ -127,18 +121,18 @@ class ComidaEliminar(SuccessMessageMixin, DeleteView):
     fields = "__all__"     
 
         
-    # Redireccionamos a la página principal luego de eliminar un registro o arepa
+
     def get_success_url(self): 
-        success_message = 'Comida Eliminada Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa 
+        success_message = 'Comida Eliminada Correctamente!' 
         messages.success (self.request, (success_message))       
-        return reverse('leer') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer') 
     
 class UsuarioListado(ListView):
-    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'  # Ordenar por el campo fecha_nacimiento
+    model = Usuarios 
     
         
 class UsuarioListadoCumple(ListView):
-    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Usuarios
     ordering = 'nacimiento'  # Ordenar por el campo fecha_nacimiento
 
         
@@ -153,8 +147,10 @@ class UsuarioListadoCumple(ListView):
 
 #Crear
 class UsuarioCrear(SuccessMessageMixin, CreateView):
-    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form_class = UsuarioForm # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
+    model = Usuarios 
+    form_class = UsuarioForm #Llamaos al formulario que creamos en forms.py
+
+    #Verificamos el formulario
     def form_valid(self, form):
             form.save()
             usuario = form.cleaned_data.get('username')
@@ -163,6 +159,7 @@ class UsuarioCrear(SuccessMessageMixin, CreateView):
             telefono = form.cleaned_data.get('telefono')
             direccion = form.cleaned_data.get('direccion')
             nacimiento = form.cleaned_data.get('nacimiento')
+            #Creamos el usuario en la base de datos
             usuarioBD = Usuarios(telefono=telefono, direccion=direccion, nacimiento=nacimiento, usuario=usuario)
             usuarioBD.save()
 
@@ -175,20 +172,20 @@ class UsuarioCrear(SuccessMessageMixin, CreateView):
 
             login(self.request, usuario)
             return redirect('vista_principal')
-    #Leer, mostrar los detalles de la comida
+
 class UsuarioDetalle(DetailView):
-    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Usuarios
 
 #Actualizar por formulario
 class UsuarioActualizar(SuccessMessageMixin, UpdateView):
-    model = Usuarios # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Usuarios # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
-    success_message = 'Usuario Actualizado Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa
+    model = Usuarios 
+    form = Usuarios 
+    fields = "__all__" 
+    success_message = 'Usuario Actualizado Correctamente!' 
 
-    # Redireccionamos a la página principal luego de actualizar un registro o arepa
+
     def get_success_url(self):
-        return reverse('leer_usuario') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_usuario') 
 
 #Eliminar
 class UsuarioEliminar(SuccessMessageMixin, DeleteView):
@@ -196,43 +193,119 @@ class UsuarioEliminar(SuccessMessageMixin, DeleteView):
     form = Usuarios
     fields = "__all__"
 
-        
-    # Redireccionamos a la página principal luego de eliminar un registro o arepa
-    def get_success_url(self):
-        success_message = 'Usuario Eliminado Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa
-        messages.success (self.request, (success_message))
-        return reverse('leer_usuario') # Redireccionamos a la vista principal 'leer'
 
+    def get_success_url(self):
+        # Obtenemos el usuario que se va a eliminar
+        usuario = Usuarios.objects.get(id=self.kwargs['pk'])
+        username = usuario.usuario
+
+        # Eliminamos el usuario de la tabla users
+        try:
+            user = User.objects.get(username=username)
+            user.delete()
+        except User.DoesNotExist:
+            pass
+
+        success_message = 'Usuario Eliminado Correctamente!'
+        messages.success (self.request, (success_message))
+        #Obtenemos el usuario que se va a eliminar para eliminarlo de users 
+        return reverse('leer_usuario') 
+
+class DescuentoCategoriaListado(ListView):
+    model = DescuentoCategoria
+
+class DescuentoCategoriaCrear(SuccessMessageMixin, CreateView):
+    model = DescuentoCategoria
+    form = DescuentoCategoria
+    fields = "__all__"
+    success_message = 'Descuento Creado Correctamente!'
+
+    def get_success_url(self):
+        return reverse('leer_descuentoCategoria')
+
+class DescuentoCategoriaActualizar(SuccessMessageMixin, UpdateView):
+    model = DescuentoCategoria
+    form = DescuentoCategoria
+    fields = "__all__"
+    success_message = 'Descuento Actualizado Correctamente!'
+
+    def get_success_url(self):
+        return reverse('leer_descuentoCategoria')
+
+class DescuentoCategoriaDetalle(DetailView):
+    model = DescuentoCategoria
+
+class DescuentoCategoriaEliminar(SuccessMessageMixin, DeleteView):
+    model = DescuentoCategoria
+    form = DescuentoCategoria
+    fields = "__all__"
+
+    def get_success_url(self):
+        success_message = 'Descuento Eliminado Correctamente!'
+        messages.success (self.request, (success_message))
+        return reverse('leer_descuentoCategoria')
+
+class DescuentoProductoListado(ListView):
+    model = DescuentoProducto
+
+class DescuentoProductoCrear(SuccessMessageMixin, CreateView):
+    model = DescuentoProducto
+    form = DescuentoProducto
+    fields = "__all__"
+    success_message = 'Descuento Creado Correctamente!'
+
+    def get_success_url(self):
+        return reverse('leer_descuentoProducto')
+
+class DescuentoProductoActualizar(SuccessMessageMixin, UpdateView):
+    model = DescuentoProducto
+    form = DescuentoProducto
+    fields = "__all__"
+    success_message = 'Descuento Actualizado Correctamente!'
+
+    def get_success_url(self):
+        return reverse('leer_descuentoProducto')
+
+class DescuentoProductoDetalle(DetailView):
+    model = DescuentoProducto
+
+class DescuentoProductoEliminar(SuccessMessageMixin, DeleteView):
+    model = DescuentoProducto
+    form = DescuentoProducto
+    fields = "__all__"
+
+    def get_success_url(self):
+        success_message = 'Descuento Eliminado Correctamente!'
+        messages.success (self.request, (success_message))
+        return reverse('leer_descuentoProducto')
+    
 class PedidoListado(ListView):
-    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Delivery 
 
 #Crear
 class PedidoCrear(SuccessMessageMixin, CreateView):
-    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Delivery # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
-    success_message = 'Pedido Creado Correctamente!' # Mostramos este Mensaje luego de Crear una Arepa
+    model = Delivery 
+    form = Delivery 
+    fields = "__all__" 
+    success_message = 'Pedido Creado Correctamente!'
     
-    #
-    # Redireccionamos a la página principal luego de crear un registro o arepa
     def get_success_url(self):
-        return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_pedido') 
 
 #Leer, mostrar los detalles de la comida
 class PedidoDetalle(DetailView):
-    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
+    model = Delivery 
 
 #Actualizar por formulario
 class PedidoActualizar(SuccessMessageMixin, UpdateView):
-    model = Delivery # Llamamos a la clase 'Arepa' que se encuentra en nuestro archivo 'models.py'
-    form = Delivery # Definimos nuestro formulario con el nombre de la clase o modelo 'Arepa'
-    fields = "__all__" # Le decimos a Django que muestre todos los campos de la tabla 'arepas' de nuestra Base de Datos
-    success_message = 'Pedido Actualizado Correctamente!' # Mostramos este Mensaje luego de Editar un Arepa
-
+    model = Delivery
+    form = Delivery
+    fields = "__all__" 
+    success_message = 'Pedido Actualizado Correctamente!' 
         
-    # Redireccionamos a la página principal luego de actualizar un registro o arepa
+
     def get_success_url(self):
-        return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_pedido') 
 
 #Eliminar
 class PedidoEliminar(SuccessMessageMixin, DeleteView):
@@ -240,13 +313,13 @@ class PedidoEliminar(SuccessMessageMixin, DeleteView):
     form = Delivery
     fields = "__all__"
         
-    # Redireccionamos a la página principal luego de eliminar un registro o arepa
+
     def get_success_url(self):
-        success_message = 'Pedido Eliminado Correctamente!' # Mostramos este Mensaje luego de Eliminar una Arepa
+        success_message = 'Pedido Eliminado Correctamente!' 
         messages.success (self.request, (success_message))
-        return reverse('leer_pedido') # Redireccionamos a la vista principal 'leer'
+        return reverse('leer_pedido') 
 
-
+#Index del administrador
 class Index(View):
     template_name = 'admin/indexAdmi.html'
     #Verificamos si el usuario es administrador
@@ -263,13 +336,14 @@ class InformacionVentaListado(ListView):
     def get_queryset(self):
         return InformacionVenta.objects.all().order_by('-cantidad')
 
-
+#Vista principal para todos los usuarios
 class VistaPrincipalView(TemplateView):
     template_name = 'vista_usuario/vistaPrincipal.html'
 
-
+    #Función para obtener el contexto de la vista
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        # Obtener la búsqueda
         query = self.request.GET.get('q')
         if query:
             # Realizar búsqueda y pasar los resultados a la plantilla
@@ -277,7 +351,7 @@ class VistaPrincipalView(TemplateView):
             context['resultados'] = productos
         return context
 
-
+#Funciones para mostrar los productos por categoría
 def vista_vegetariano(request):
     items = Comida_menu.objects.filter(categoria='1')
     context = {'items': items}
@@ -308,12 +382,12 @@ def vista_postres(request):
     print(items)
     return render(request, 'vista_usuario/vistaPostre.html', context)
 
-
+#Función para cerrar sesión
 def logout_view(request):
     logout(request)
     return redirect('login')
 
-
+#Para agregar productos al carrito, el usuario debe estar logueado
 @login_required
 def agregar_producto(request, pk):
     producto = Comida_menu.objects.filter(pk=pk).first()
@@ -426,16 +500,19 @@ def factura(request):
     carrito = request.session.get('carrito', [])
     request.session['carrito'] = []
 
+    #Inicializamos los descuentos
     descuento = 0
     descuentoCategoria = 0
     descuentoProducto = 0
     descuentoCumple = 0
 
+    #Obtenemos el usuario, lo que pidió y la cantidad
     usuario = Usuarios.objects.get(usuario=request.user)
     pedidos = Pedidos.objects.filter(id_usuario=usuario, fecha=datetime.date.today())
     comidas_ids = pedidos.values_list('id_comida', flat=True)
     comida_menu = Comida_menu.objects.filter(id__in=comidas_ids)
 
+    #Calculamos el precio total de cada producto
     precios_calculados = []
     for pedido in pedidos:
         precio_total = pedido.id_comida.precio * pedido.cantidad
@@ -477,6 +554,7 @@ def factura(request):
     elif descuentoProducto > descuentoCumple and descuentoProducto > descuentoCategoria:
         descuento = descuentoProducto
 
+    #Calculamos el subtotal, el descuento y el total
     subtotal = sum(precios_calculados, 0)
     resta = sum(precios_calculados, 0)*descuento
     total = sum(precios_calculados, 0) - resta

@@ -1,0 +1,10 @@
+{% if productos %}
+  <h2>Resultados de búsqueda:</h2>
+  <ul>
+    {% for producto in productos %}
+      <li>{{ producto.nombre }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No se encontraron resultados.</p>
+{% endif %}

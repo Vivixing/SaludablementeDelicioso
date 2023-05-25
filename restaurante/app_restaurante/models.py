@@ -67,7 +67,18 @@ class Pedidos(models.Model):
 
 class DescuentoProducto(models.Model):
     id_comida = models.ForeignKey(Comida_menu, to_field='id', db_column='id_comida', on_delete=models.CASCADE)
-    descuento = models.FloatField()
+    CHOICES = (
+        (0.1, 'Descuento 10%'),
+        (0.15, 'Descuento 15%'),
+        (0.2, 'Descuento 20%'),
+        (0.25, 'Descuento 25%'),
+        (0.3, 'Descuento 30%'),
+        (0.35, 'Descuento 35%'),
+        (0.4, 'Descuento 40%'),
+        (0.45, 'Descuento 45%'),
+        (0.5, 'Descuento 50%'),
+    )
+    descuento = models.FloatField(choices=CHOICES)
     fecha_inicio = models.DateField(max_length=100)
     fecha_fin = models.DateField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -89,7 +100,18 @@ class DescuentoCumple(models.Model):
 
 class DescuentoCategoria(models.Model):
     id_categoria = models.ForeignKey(Categoria, to_field='id', db_column='id_categoria', on_delete=models.CASCADE)
-    descuento = models.FloatField()
+    CHOICES = (
+        (0.1, 'Descuento 10%'),
+        (0.15, 'Descuento 15%'),
+        (0.2, 'Descuento 20%'),
+        (0.25, 'Descuento 25%'),
+        (0.3, 'Descuento 30%'),
+        (0.35, 'Descuento 35%'),
+        (0.4, 'Descuento 40%'),
+        (0.45, 'Descuento 45%'),
+        (0.5, 'Descuento 50%'),
+    )
+    descuento = models.FloatField(choices=CHOICES)
     fecha_inicio = models.DateField(max_length=100)
     fecha_fin = models.DateField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)

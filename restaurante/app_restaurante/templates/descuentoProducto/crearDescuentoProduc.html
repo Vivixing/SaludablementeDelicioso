@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     {# Cargamos la librería #}
+     {% load bootstrap4 %}
+
+      {# CSS Bootstrap #}
+ {% bootstrap_css %}
+
+ {# Widget Tweaks #}
+ {% load widget_tweaks %}
+
+ {# Archivos #}
+ {% load static %} <!-- STATIC_URL -->
+
+ <style>
+     body {
+         background-color: #333333;
+     }
+     
+     h1 {
+         color: #ffffff;
+     }
+     label {
+        color: #ffffff;
+    }
+ </style>
+ <head>
+    <body>
+    <div class="container" style="padding: 30px; border-radius: 10px;">
+        <h1 class="text-center mb-4">Crear Descuento de Categoria</h1>
+
+        <form method="post" enctype="multipart/form-data">
+
+            <!-- Pasamos el 'csrf_token' de seguridad para poder crear un nuevo registro -->
+            {% csrf_token %}
+            
+            <!-- Formulario para descuento -->
+            <div>
+                <label for="id_comida" class="txt_negrita">Producto:</label>
+                {{ form.id_comida|add_class:"form-control" }}
+            </div>
+            <div>
+                <label for="descuento" class="txt_negrita">Descuento:</label>
+                {{ form.descuento|add_class:"form-control"}}
+            </div>
+            <div>
+                <label for="fecha_inicio" class="txt_negrita">Fecha Inicio:</label>
+                {{ form.fecha_inicio|add_class:"form-control" |attr:'type:date'}}
+            </div>
+            <div>
+                <label for="fecha_fin" class="txt_negrita">Fecha Fin:</label>
+                {{ form.fecha_fin|add_class:"form-control" |attr:'type:date'}}
+            </div>
+            <p>
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary mr-3">Aceptar</button>
+                <a href="./" type="submit" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+        {# JS y jQuery Bootstrap #}
+        {% bootstrap_javascript jquery='full' %}
+        
+    </div>
+</body>
+<html>

@@ -501,6 +501,7 @@ def factura(request):
     request.session['carrito'] = []
 
     #Inicializamos los descuentos
+    resta = 0
     descuento = 0
     descuentoCategoria = 0
     descuentoProducto = 0
@@ -509,7 +510,7 @@ def factura(request):
     #Obtenemos el usuario, lo que pidió y la cantidad
     usuario = Usuarios.objects.get(usuario=request.user)
     pedidos = Pedidos.objects.filter(id_usuario=usuario, fecha=datetime.date.today())
-    comidas_ids = pedidos.values_list('id_comida', flat=True)
+    comidas_ids = list(pedidos.values_list('id_comida', flat=True))
     comida_menu = Comida_menu.objects.filter(id__in=comidas_ids)
 
     #Calculamos el precio total de cada producto
@@ -544,19 +545,21 @@ def factura(request):
             descuentoProducto = descuentoProducto.descuento
         else:
             descuentoProducto = 0
-    #Se aplica el descuento que sea mayor
-    if descuentoCumple > descuentoCategoria and descuentoCumple > descuentoProducto:
-        descuento = descuentoCumple
+
+        #Si ese producto tiene descuento por categoría y por producto, se aplica el mayor
+        if descuentoCategoria > descuentoProducto:
+            descuento = descuentoCategoria
+        else:
+            descuento = descuentoProducto
+        #Descontamos el descuento del precio total del producto
+        resta = resta + precios_calculados[comidas_ids.index(pedido.id_comida.id)] * descuento
+        precios_calculados[comidas_ids.index(pedido.id_comida.id)] = precios_calculados[comidas_ids.index(pedido.id_comida.id)] - precios_calculados[comidas_ids.index(pedido.id_comida.id)] * descuento
+        #Reiniciamos el descuento
     
-    elif descuentoCategoria > descuentoCumple and descuentoCategoria > descuentoProducto:
-        descuento = descuentoCategoria
-    
-    elif descuentoProducto > descuentoCumple and descuentoProducto > descuentoCategoria:
-        descuento = descuentoProducto
 
     #Calculamos el subtotal, el descuento y el total
-    subtotal = sum(precios_calculados, 0)
-    resta = sum(precios_calculados, 0)*descuento
+    subtotal = int(sum(precios_calculados, 0))
+    resta = resta + sum(precios_calculados, 0)*descuentoCumple
     total = sum(precios_calculados, 0) - resta
     resta= int(resta)
     total = int(total)

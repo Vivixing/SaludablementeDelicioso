@@ -6,15 +6,15 @@ Este sitio web es ideal para usuarios que buscan opciones de comida saudable, pe
 
 ## Propósito del Sistema 
 
-- Proporcionar a los usuarios una herramienta útil para controlar su ingesta diaria de carbohidratos y azúcares lo que ayudaría a mantener una alimentación saludable.
+- Proporcionar a los usuarios una herramienta útil para controlar su ingesta diaria de carbohidratos y azúcares lo que ayudaría a mantener una alimentación saludable, gracias a nuestras opciones de comida.
 
-- Buscamos dar una solución efectiva para mejorar la salud y la calidad de vida de los usuarios con diabetes y vegetarianos complementando la satisfacción sus necesidades alimentarias.
+- Buscamos dar una solución efectiva para mejorar la salud y la calidad de vida de los usuarios con diabetes y vegetarianos complementando la satisfacción de sus necesidades alimentarias.
 
 
 ## Características 
 
 ### Apartado Principal
-Se muestra la información sobre el la plataforma, información de contacto, y horarios de atención. 
+Se muestra la información sobre el la plataforma con sus respectivos apartados. 
 
 ### Menú y Categorías
 Visualizar el menú de la plataforma organizado por las categórías, donde cada comida tendrá su respactiva descricpción, precio e imagen de referencia.
@@ -71,13 +71,11 @@ Permite que en fechas especiales, se realicen descuentos de manera automática.
     - Cumpleaños de un Usuario.
     - Fechas especiales.
 
-### Apartado de Reportes
-Generará reportes en forma de tablas de los clientes que cumplirán años el mes que empieza y las comidas que más se venden por categorías. Reportes solo visibles para el administrador.
-
 ## Instalaciones del Proyecto
 
 - Python
 - Django
+- Bootstrap
 - Postgresql 
 - DBeaver
 
